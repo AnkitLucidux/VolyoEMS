@@ -1,0 +1,12 @@
+F:\EMS.Web\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.deps.json
+F:\EMS.Web\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.dll
+F:\EMS.Web\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.pdb
+F:\EMS.Web\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Entities.dll
+F:\EMS.Web\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Entities.pdb
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csprojAssemblyReference.cache
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csproj.CoreCompileInputs.cache
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.AssemblyInfoInputs.cache
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.AssemblyInfo.cs
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csproj.CopyComplete
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.dll
+F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.pdb
