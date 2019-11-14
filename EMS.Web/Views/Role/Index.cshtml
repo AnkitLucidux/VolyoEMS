@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model IEnumerable<IdentityRole>
+﻿@model IEnumerable<EMS.Web.ViewModels.RoleViewModel>
 
 @{
     ViewData["Title"] = "Role Management";
@@ -32,11 +31,14 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => role.Name)
+                    @Html.DisplayFor(modelItem => role.RoleName)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@role.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@role.Id">Delete</a>
+                    <form asp-action="Delete" asp-route-id="@role.RoleId" method="post">
+                        <a asp-action="Edit" asp-route-id="@role.RoleId" class="btn btn-primary">Edit</a>
+                        <a asp-action="Detail" asp-route-id="@role.RoleId" class="btn btn-info">Detail</a>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Role : @role.RoleName ?')">Delete</button>
+                    </form>
                 </td>
             </tr>
         }

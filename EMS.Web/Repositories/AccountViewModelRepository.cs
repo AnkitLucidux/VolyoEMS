@@ -14,7 +14,7 @@ namespace EMS.Web.Repositories
     public class AccountViewModelRepository
     {
         public IUserService userService;
-       
+
         public AccountViewModelRepository(EMSDbContext eMSDbContext)
         {
             userService = new UserService(eMSDbContext);
@@ -23,6 +23,16 @@ namespace EMS.Web.Repositories
         public User AddUpdateUser(User user)
         {
             return userService.AddUpdateUser(user);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return userService.GetAllUsers();
+        }
+
+        public User GetUserById(Guid id)
+        {
+            return userService.GetUserById(id);
         }
     }
 }

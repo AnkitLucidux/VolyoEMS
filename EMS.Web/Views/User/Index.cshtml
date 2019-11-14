@@ -1,0 +1,78 @@
+﻿@model IEnumerable<EMS.Web.ViewModels.UserViewModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayName("Username")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreatedBy)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Email)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => user.FirstName + user.MiddileName + user.LastName)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.IsActive)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.IsDeleted)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.CreatedBy)
+                </td>
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@user.UserId">Edit</a>
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@user.UserId">Details</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@user.UserId" onclick="return confirm('Are you sure you want to delete User : @user.UserName ?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
@@ -24,8 +24,17 @@ namespace EMS.Web.Controllers
         // GET: Role
         public ActionResult Index()
         {
+            List<RoleViewModel> roleList = new List<RoleViewModel>();
             var roles = roleManager.Roles;
-            return View(roles);
+            foreach (var role in roles)
+            {
+                RoleViewModel model = new RoleViewModel();
+                model.RoleId = role.Id;
+                model.RoleName = role.Name;
+                roleList.Add(model);
+            }
+
+            return View(roleList);
         }
 
         // GET: Role/Create
@@ -92,42 +101,47 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(RoleViewModel model)
         {
-            //try
-            //{
-            if (ModelState.IsValid)
+            try
             {
-                var role = await roleManager.FindByNameAsync(model.RoleName); //HR //Admin
+                if (ModelState.IsValid)
+                {
+                    var role = await roleManager.FindByNameAsync(model.RoleName);
 
-                if (role != null && model.RoleId != role.Id)
-                {
-                    TempData["ErrorMessage"] = "Role is already exists";
-                }
+                    if (role != null && model.RoleId != role.Id)
+                    {
+                        TempData["ErrorMessage"] = "Role is already exists";
+                        return View();
+                    }
 
-                IdentityRole identityRole = new IdentityRole
-                {
-                    Id = model.RoleId,
-                    Name = model.RoleName
-                };
-                IdentityResult result = await roleManager.UpdateAsync(identityRole);
-                if (result.Succeeded)
-                {
-                    TempData["SuccessMessage"] = "Role updated successfully";
+                    if (role == null)
+                    {
+                        role = await roleManager.FindByIdAsync(model.RoleId);
+                    }
 
+                    role.Id = model.RoleId;
+                    role.Name = model.RoleName;
+
+                    IdentityResult result = await roleManager.UpdateAsync(role);
+                    if (result.Succeeded)
+                    {
+                        TempData["SuccessMessage"] = "Role updated successfully";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Something went wrong!";
+                    }
                 }
-                else
-                {
-                    TempData["ErrorMessage"] = "Something went wrong!";
-                }
+                return View();
             }
-            return View();
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            catch
+            {
+                return View();
+            }
         }
 
-        // GET: Role/Delete/5
+        // POST: Role/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
             IdentityRole role = await roleManager.FindByIdAsync(id);
@@ -147,7 +161,7 @@ namespace EMS.Web.Controllers
             {
                 TempData["ErrorMessage"] = "No role found";
             }
-            //ModelState.AddModelError("", "No role found");
+
             return RedirectToAction("Index");
         }
     }

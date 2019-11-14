@@ -4,7 +4,9 @@ using EMS.Services.IService;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EMS.Services.Service
 {
@@ -32,6 +34,16 @@ namespace EMS.Services.Service
 
             context.SaveChanges();
             return user;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return context.Users.ToList();
+        }
+
+        public User GetUserById(Guid id)
+        {
+            return context.Users.Where(m => m.UserId == id).FirstOrDefault();
         }
     }
 }

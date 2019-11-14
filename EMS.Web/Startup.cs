@@ -60,6 +60,7 @@ namespace EMS.Web
 
             services.AddDbContext<EMSDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped(typeof(AccountViewModelRepository));
+            services.AddScoped(typeof(EmployeeViewModelRepository));
 
         }
 

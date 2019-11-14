@@ -34,19 +34,5 @@ namespace EMS.Web.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        [HttpGet]
-        public IActionResult AddEmployee()
-        {
-            User user = new User();
-            return View(user);
-        }
-
-        [HttpPost]
-        public IActionResult AddEmployee(User user)
-        {
-            _accountViewModelRepository.AddUpdateUser(user);
-            return View(user);
-        }
     }
 }
