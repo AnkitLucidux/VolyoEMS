@@ -4,7 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="text-danger">@TempData["ErrorMessage"]</p>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <p class="text-success">@TempData["SuccessMessage"]</p>
+}
 
 <p>
     <a asp-action="Create">Create New</a>

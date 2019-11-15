@@ -61,7 +61,7 @@ namespace EMS.Web
             services.AddDbContext<EMSDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped(typeof(AccountViewModelRepository));
             services.AddScoped(typeof(EmployeeViewModelRepository));
-
+            services.AddScoped(typeof(AdminRepository));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,7 +6,15 @@
 
 <h1>Edit</h1>
 
-<h4>Employee</h4>
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="text-danger">@TempData["ErrorMessage"]</p>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <p class="text-success">@TempData["SuccessMessage"]</p>
+}
+
 <hr />
 <div class="row">
     <div class="col-md-4">

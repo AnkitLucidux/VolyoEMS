@@ -68,12 +68,10 @@ namespace EMS.Web.ViewModels
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
 
+        [Display(Name = "Name")]
+        public string FullName { get; set; }
+
         [NotMapped]
         public List<SelectListItem> Roles { get; set; }
-
-        public UserViewModel()
-        {
-            LastLogin = DateTime.Now;
-        }
     }
 }

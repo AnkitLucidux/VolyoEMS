@@ -9,14 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 @if (TempData["ErrorMessage"] != null)
 {
-    <p>@TempData["ErrorMessage"]</p>
+    <p class="text-danger">@TempData["ErrorMessage"]</p>
 }
 @if (TempData["SuccessMessage"] != null)
 {
-    <p>@TempData["SuccessMessage"]</p>
+    <p class="text-success">@TempData["SuccessMessage"]</p>
 }
+
 <table class="table">
     <thead>
         <tr>

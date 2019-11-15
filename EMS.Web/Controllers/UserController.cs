@@ -20,7 +20,7 @@ namespace EMS.Web.Controllers
         public UserManager<IdentityUser> userManager { get; }
         public AccountViewModelRepository accountViewModelRepository { get; }
 
-        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, AccountViewModelRepository accountViewModelRepository)
+        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AccountViewModelRepository accountViewModelRepository)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -37,48 +37,46 @@ namespace EMS.Web.Controllers
             foreach (var user in users)
             {
                 var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
+                var userRoleName = "Dummy";
 
                 UserViewModel model = new UserViewModel();
+
                 model.UserId = user.UserId;
                 model.AspUserId = user.AspUserId;
                 model.UserName = aspUser.UserName;
                 model.Email = aspUser.Email;
-                model.FirstName = user.FirstName;
-                model.MiddileName = user.MiddileName;
-                model.LastName = user.LastName;
-                model.RoleName = "Dummy";
+                model.FullName = user.MiddileName != null ? user.FirstName + " " + user.MiddileName + " " + user.LastName : user.FirstName + " " + user.LastName;
+                model.RoleName = userRoleName;
                 model.IsActive = user.IsActive;
                 model.IsDeleted = user.IsDeleted;
-                model.CreatedDate = user.CreatedDate;
-                model.CreatedBy = user.CreatedBy;
                 userList.Add(model);
             }
             return View(userList);
         }
 
-        // GET: User/Details/5
-        public ActionResult Details(Guid id)
-        {
-            UserViewModel model = new UserViewModel();
-            var user = accountViewModelRepository.GetUserById(id);
+        //// GET: User/Details/5
+        //public ActionResult Details(Guid id)
+        //{
+        //    UserViewModel model = new UserViewModel();
+        //    var user = accountViewModelRepository.GetUserById(id);
 
-            model.UserId = user.UserId;
-            model.AspUserId = user.AspUserId;
-            model.UserName = "Dummy";
-            model.Email = user.Email;
-            model.Password = "Dummy";
-            model.ConfirmPassword = "Dummy";
-            model.FirstName = user.FirstName;
-            model.MiddileName = user.MiddileName;
-            model.LastName = user.LastName;
-            model.PhoneNumber = user.PhoneNumber;
-            model.MobileNumber = user.MobileNumber;
-            model.EmailConfirmed = user.EmailConfirmed;
-            model.LastLogin = user.LastLogin;
-            model.RoleId = "Dummy";
-            model.RoleName = "Dummy";
-            return View(model);
-        }
+        //    model.UserId = user.UserId;
+        //    model.AspUserId = user.AspUserId;
+        //    model.UserName = "Dummy";
+        //    model.Email = user.Email;
+        //    model.Password = "Dummy";
+        //    model.ConfirmPassword = "Dummy";
+        //    model.FirstName = user.FirstName;
+        //    model.MiddileName = user.MiddileName;
+        //    model.LastName = user.LastName;
+        //    model.PhoneNumber = user.PhoneNumber;
+        //    model.MobileNumber = user.MobileNumber;
+        //    model.EmailConfirmed = user.EmailConfirmed;
+        //    model.LastLogin = user.LastLogin;
+        //    model.RoleId = "Dummy";
+        //    model.RoleName = "Dummy";
+        //    return View(model);
+        //}
 
         // GET: User/Create
         public ActionResult Create()
@@ -130,8 +128,8 @@ namespace EMS.Web.Controllers
                             addUser.LastName = model.LastName;
                             addUser.Email = model.Email;
                             addUser.PhoneNumber = model.PhoneNumber;
-                            addUser.MobileNumber = model.PhoneNumber;
-                            addUser.EmailConfirmed = true;
+                            addUser.MobileNumber = model.MobileNumber;
+
                             addUser.CreatedBy = 0; // There must be login user id
 
                             var result = accountViewModelRepository.AddUpdateUser(addUser);
@@ -155,29 +153,29 @@ namespace EMS.Web.Controllers
                     }
                 }
             }
-
             return View(model);
         }
 
         // GET: User/Edit/5
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Edit(string id)
         {
             UserViewModel model = new UserViewModel();
             var user = accountViewModelRepository.GetUserById(new Guid(id));
-
+            var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
 
             model.UserId = user.UserId;
             model.AspUserId = user.AspUserId;
-            model.UserName = "Dummy";
-            model.Email = user.Email;
-            model.Password = "Dummy";
-            model.ConfirmPassword = "Dummy";
+            model.UserName = aspUser.UserName;
+            model.Email = aspUser.Email;
             model.FirstName = user.FirstName;
             model.MiddileName = user.MiddileName;
             model.LastName = user.LastName;
             model.PhoneNumber = user.PhoneNumber;
             model.MobileNumber = user.MobileNumber;
-            model.EmailConfirmed = user.EmailConfirmed;
+            model.CreatedDate = user.CreatedDate;
+            model.ModifiedDate = user.ModifiedDate;
+            model.CreatedBy = user.CreatedBy;
+            model.ModifiedBy = user.ModifiedBy;
             model.LastLogin = user.LastLogin;
             model.RoleId = "Dummy";
             model.RoleName = "Dummy";
@@ -194,6 +192,11 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(UserViewModel model)
         {
+            model.Roles = roleManager.Roles.Select(r => new SelectListItem
+            {
+                Text = r.Name,
+                Value = r.Id
+            }).ToList();
             if (ModelState.IsValid)
             {
                 var user = accountViewModelRepository.GetUserById(model.UserId);
@@ -218,7 +221,6 @@ namespace EMS.Web.Controllers
                     user.PhoneNumber = model.PhoneNumber;
                     user.MobileNumber = model.MobileNumber;
                     user.EmailConfirmed = model.EmailConfirmed;
-                    user.LastLogin = model.LastLogin;
 
                     var result = accountViewModelRepository.AddUpdateUser(user);
                     if (result != null)
@@ -231,7 +233,7 @@ namespace EMS.Web.Controllers
                     }
                 }
             }
-            return View();
+            return View(model);
         }
 
         // GET: User/Delete/5
