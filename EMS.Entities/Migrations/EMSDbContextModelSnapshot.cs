@@ -40,7 +40,8 @@ namespace EMS.Entities.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("DesignationName")
+                    b.Property<string>("DesignationName")
+                        .IsRequired()
                         .HasMaxLength(20);
 
                     b.HasKey("DesignationId");

@@ -22,6 +22,7 @@ namespace EMS.Web.Repositories
         {
             return adminService.GetDepartmentList();
         }
+
         public Department GetDepartmentByName(string departmentname)
         {
             return adminService.GetDepartmentByName(departmentname);
@@ -36,9 +37,35 @@ namespace EMS.Web.Repositories
         {
             return adminService.GetDepartmentById(id);
         }
+
         public bool DeleteDepartment(int id)
         {
             return adminService.DeleteDepartment(id);
+        }
+
+        public List<Designation> GetDesignationList()
+        {
+            return adminService.GetDesignationList();
+        }
+
+        public Designation GetDesignationByName(string designationName)
+        {
+            return adminService.GetDesignationByName(designationName);
+        }
+
+        public Designation AddUpdateDesignation(Designation department)
+        {
+            return adminService.AddUpdateDesignation(department);
+        }
+
+        public Designation GetDesignationById(int id)
+        {
+            return adminService.GetDesignationById(id);
+        }
+
+        public bool DeleteDesignation(int id)
+        {
+            return adminService.DeleteDesignation(id);
         }
         
     }

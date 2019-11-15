@@ -12,8 +12,8 @@ namespace EMS.Entities
         public int DesignationId { get; set; }
 
         [Required(ErrorMessage = "Designation name required.")]
-        [StringLength(20, ErrorMessage = "The field {0} must be a maximum length of '20'.")]
+        [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '20'.")]
         [DisplayName("Designation Name")]
-        public int DesignationName { get; set; }
+        public string DesignationName { get; set; }
     }
 }
