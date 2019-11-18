@@ -113,7 +113,11 @@ namespace EMS.Web.Controllers
                 var result = _adminRepository.DeleteDepartment(id);
                 if (result)
                 {
-                    this.TempData["SuccessMessage"] = "Department deleted Successfully";
+                    TempData["SuccessMessage"] = "Department deleted Successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
                 }
             }
             catch

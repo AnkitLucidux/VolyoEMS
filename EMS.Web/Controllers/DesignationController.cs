@@ -96,7 +96,6 @@ namespace EMS.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
@@ -106,7 +105,11 @@ namespace EMS.Web.Controllers
                 var result = _adminRepository.DeleteDesignation(id);
                 if (result)
                 {
-                    this.TempData["SuccessMessage"] = "Designation deleted Successfully";
+                    TempData["SuccessMessage"] = "Designation deleted Successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
                 }
             }
             catch

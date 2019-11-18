@@ -32,5 +32,10 @@ namespace EMS.Web.Repositories
         {
             return employeeService.GetEmployeeById(id);
         }
+
+        public bool DeleteEmployeeById(Guid id)
+        {
+            return employeeService.DeleteEmployeeById(id);
+        }
     }
 }

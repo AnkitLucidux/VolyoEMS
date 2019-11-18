@@ -1,4 +1,4 @@
-﻿@model EMS.Entities.Employee
+﻿@model EMS.Web.ViewModels.EmployeeViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -18,206 +18,206 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EmployeeCode)
+            @Html.DisplayNameFor(model => model.Employee.EmployeeCode)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EmployeeCode)
+            @Html.DisplayFor(model => model.Employee.EmployeeCode)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Employee.FirstName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.Employee.FirstName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MiddileName)
+            @Html.DisplayNameFor(model => model.Employee.MiddileName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MiddileName)
+            @Html.DisplayFor(model => model.Employee.MiddileName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Employee.LastName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Employee.LastName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
+            @Html.DisplayNameFor(model => model.Employee.Gender)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
+            @Html.DisplayFor(model => model.Employee.Gender)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.DOB)
+            @Html.DisplayNameFor(model => model.Employee.DOB)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.DOB)
+            @Html.DisplayFor(model => model.Employee.DOB)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EmailAddress)
+            @Html.DisplayNameFor(model => model.Employee.EmailAddress)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EmailAddress)
+            @Html.DisplayFor(model => model.Employee.EmailAddress)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FatherName)
+            @Html.DisplayNameFor(model => model.Employee.FatherName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FatherName)
+            @Html.DisplayFor(model => model.Employee.FatherName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MotherName)
+            @Html.DisplayNameFor(model => model.Employee.MotherName)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MotherName)
+            @Html.DisplayFor(model => model.Employee.MotherName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PermanentAddress)
+            @Html.DisplayNameFor(model => model.Employee.PermanentAddress)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PermanentAddress)
+            @Html.DisplayFor(model => model.Employee.PermanentAddress)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CommunicationAddress)
+            @Html.DisplayNameFor(model => model.Employee.CommunicationAddress)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CommunicationAddress)
+            @Html.DisplayFor(model => model.Employee.CommunicationAddress)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Employee.PhoneNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.Employee.PhoneNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MobileNumber)
+            @Html.DisplayNameFor(model => model.Employee.MobileNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MobileNumber)
+            @Html.DisplayFor(model => model.Employee.MobileNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AadharNumber)
+            @Html.DisplayNameFor(model => model.Employee.AadharNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AadharNumber)
+            @Html.DisplayFor(model => model.Employee.AadharNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PanNumber)
+            @Html.DisplayNameFor(model => model.Employee.PanNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PanNumber)
+            @Html.DisplayFor(model => model.Employee.PanNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PassportNumber)
+            @Html.DisplayNameFor(model => model.Employee.PassportNumber)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PassportNumber)
+            @Html.DisplayFor(model => model.Employee.PassportNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PassportExpDate)
+            @Html.DisplayNameFor(model => model.Employee.PassportExpDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PassportExpDate)
+            @Html.DisplayFor(model => model.Employee.PassportExpDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaritalStatus)
+            @Html.DisplayNameFor(model => model.Employee.MaritalStatus)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaritalStatus)
+            @Html.DisplayFor(model => model.Employee.MaritalStatus)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.JoiningDate)
+            @Html.DisplayNameFor(model => model.Employee.JoiningDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.JoiningDate)
+            @Html.DisplayFor(model => model.Employee.JoiningDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalExperience)
+            @Html.DisplayNameFor(model => model.Employee.TotalExperience)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.TotalExperience)
+            @Html.DisplayFor(model => model.Employee.TotalExperience)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PastExperience)
+            @Html.DisplayNameFor(model => model.Employee.PastExperience)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PastExperience)
+            @Html.DisplayFor(model => model.Employee.PastExperience)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PrimarySkills)
+            @Html.DisplayNameFor(model => model.Employee.PrimarySkills)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PrimarySkills)
+            @Html.DisplayFor(model => model.Employee.PrimarySkills)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SecondarySkills)
+            @Html.DisplayNameFor(model => model.Employee.SecondarySkills)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SecondarySkills)
+            @Html.DisplayFor(model => model.Employee.SecondarySkills)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReportTo)
+            @Html.DisplayNameFor(model => model.Employee.ReportTo)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReportTo)
+            @Html.DisplayFor(model => model.Employee.ReportTo)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Designation)
+            @Html.DisplayNameFor(model => model.Employee.Designation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Designation.DesignationId)
+            @Html.DisplayFor(model => model.Employee.Designation.DesignationName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
+            @Html.DisplayNameFor(model => model.Employee.Department)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Department.DepartmentName)
+            @Html.DisplayFor(model => model.Employee.Department.DepartmentName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Qualification)
+            @Html.DisplayNameFor(model => model.Employee.Qualification)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Qualification.QualificationName)
+            @Html.DisplayFor(model => model.Employee.Qualification.QualificationName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.Employee.IsActive)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
+            @Html.DisplayFor(model => model.Employee.IsActive)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsDeleted)
+            @Html.DisplayNameFor(model => model.Employee.IsDeleted)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsDeleted)
+            @Html.DisplayFor(model => model.Employee.IsDeleted)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedDate)
+            @Html.DisplayNameFor(model => model.Employee.CreatedDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedDate)
+            @Html.DisplayFor(model => model.Employee.CreatedDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedDate)
+            @Html.DisplayNameFor(model => model.Employee.ModifiedDate)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedDate)
+            @Html.DisplayFor(model => model.Employee.ModifiedDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedBy)
+            @Html.DisplayNameFor(model => model.Employee.CreatedBy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedBy)
+            @Html.DisplayFor(model => model.Employee.CreatedBy)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ModifiedBy)
+            @Html.DisplayNameFor(model => model.Employee.ModifiedBy)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ModifiedBy)
+            @Html.DisplayFor(model => model.Employee.ModifiedBy)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Employee.EmployeeId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

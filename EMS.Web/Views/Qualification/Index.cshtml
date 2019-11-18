@@ -1,0 +1,45 @@
+﻿@model IEnumerable<EMS.Entities.Qualification>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <p class="text-danger">@TempData["ErrorMessage"]</p>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <p class="text-success">@TempData["SuccessMessage"]</p>
+}
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.QualificationName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QualificationName)
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@item.QualificationId" method="post">
+                        <a asp-action="Edit" asp-route-id="@item.QualificationId" class="btn btn-primary">Edit</a>
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Qualification :@item.QualificationName ?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

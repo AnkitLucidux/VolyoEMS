@@ -154,7 +154,7 @@ namespace EMS.Web.Controllers
                 }
                 else
                 {
-                    TempData["ErrorMessage"] = "Something went wrong!";
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
                 }
             }
             else

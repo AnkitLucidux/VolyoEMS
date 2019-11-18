@@ -37,12 +37,35 @@ namespace EMS.Services.Service
 
         public List<Employee> GetAllEmployees()
         {
-            return context.Employees.ToList();
+            return context.Employees.Include(qualification => qualification.Qualification)
+                .Include(department => department.Department)
+                .Include(designation => designation.Designation).ToList();
         }
 
         public Employee GetEmployeeById(Guid id)
         {
-            return context.Employees.Where(m => m.EmployeeId == id).FirstOrDefault();
+            return context.Employees.Include(qualification => qualification.Qualification)
+                .Include(department => department.Department)
+                .Include(designation => designation.Designation).Where(m => m.EmployeeId == id).FirstOrDefault();
+        }
+
+
+        public bool DeleteEmployeeById(Guid id)
+        {
+            try
+            {
+                var result = context.Employees.FirstOrDefault(m => m.EmployeeId == id);
+                if (result != null)
+                {
+                    context.Employees.Remove(result);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

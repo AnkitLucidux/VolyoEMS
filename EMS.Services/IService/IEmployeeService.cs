@@ -12,5 +12,7 @@ namespace EMS.Services.IService
         List<Employee> GetAllEmployees();
 
         Employee GetEmployeeById(Guid id);
+
+        bool DeleteEmployeeById(Guid id);
     }
 }

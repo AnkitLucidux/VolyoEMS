@@ -29,17 +29,16 @@ namespace EMS.Entities
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Gender required.")]
-        [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '50'.")]
         [DisplayName("Gender")]
         public Gender Gender { get; set; }
 
-        [Required(ErrorMessage = "Gender required.")]
+        [Required(ErrorMessage = "DOB required.")]
         [DisplayName("DOB")]
         public DateTime DOB { get; set; }
 
         [Required(ErrorMessage = "EmailAddress required.")]
-        [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '50'.")]
         [DisplayName("EmailAddress")]
+        [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '50'.")]
         [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Email is not valid")]
         public string EmailAddress { get; set; }
 
@@ -84,12 +83,6 @@ namespace EMS.Entities
         [DisplayName("Marital Status ")]
         public MaritalStatus MaritalStatus { get; set; }
 
-        public int QualificationId { get; set; }
-
-        public int DepartmentId { get; set; }
-
-        public int DesignationId { get; set; }
-
         [DisplayName("Joining Date")]
         public DateTime JoiningDate { get; set; }
 
@@ -108,13 +101,19 @@ namespace EMS.Entities
         [DisplayName("Report To")]
         public string ReportTo { get; set; }
 
-        [ForeignKey("DesignationId")]
-        public virtual Designation Designation { get; set; }
+        public int QualificationId { get; set; }
+
+        public int DepartmentId { get; set; }
+
+        public int DesignationId { get; set; }
+
+        [ForeignKey("QualificationId")]
+        public virtual Qualification Qualification { get; set; }
 
         [ForeignKey("DepartmentId")]
         public virtual Department Department { get; set; }
 
-        [ForeignKey("QualificationId")]
-        public virtual Qualification Qualification { get; set; }
+        [ForeignKey("DesignationId")]
+        public virtual Designation Designation { get; set; }
     }
 }

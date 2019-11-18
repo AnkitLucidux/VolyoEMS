@@ -252,6 +252,7 @@ namespace EMS.Web.Controllers
                 // TODO: Add delete logic here
 
                 return RedirectToAction(nameof(Index));
+                //TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
             }
             catch
             {

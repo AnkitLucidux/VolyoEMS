@@ -62,6 +62,7 @@ namespace EMS.Services.Service
                 return false;
             }
         }
+
         public List<Designation> GetDesignationList()
         {
             return context.Designations.ToList();
@@ -99,6 +100,54 @@ namespace EMS.Services.Service
                 if (deleteDesignation != null)
                 {
                     context.Designations.Remove(deleteDesignation);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        //Qualifiaction
+        public List<Qualification> GetQualificationList()
+        {
+            return context.Qualifications.ToList();
+        }
+
+        public Qualification GetQualificationByName(string qualificationName)
+        {
+            return context.Qualifications.FirstOrDefault(x => x.QualificationName == qualificationName);
+        }
+
+        public Qualification GetQualificationById(int id)
+        {
+            return context.Qualifications.FirstOrDefault(x => x.QualificationId == id);
+        }
+
+        public Qualification AddUpdateQualification(Qualification qualification)
+        {
+            if (default(int) == qualification.QualificationId)
+            {
+                context.Qualifications.Add(qualification);
+            }
+            else
+            {
+                context.Entry(qualification).State = EntityState.Modified;
+            }
+            context.SaveChanges();
+            return qualification;
+        }
+
+        public bool DeleteQualification(int id)
+        {
+            var deleteQualification = context.Qualifications.FirstOrDefault(x => x.QualificationId == id);
+            try
+            {
+                if (deleteQualification != null)
+                {
+                    context.Qualifications.Remove(deleteQualification);
                     context.SaveChanges();
                 }
                 return true;

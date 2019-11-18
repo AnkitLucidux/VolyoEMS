@@ -67,6 +67,31 @@ namespace EMS.Web.Repositories
         {
             return adminService.DeleteDesignation(id);
         }
-        
+
+        public List<Qualification> GetQualificationList()
+        {
+            return adminService.GetQualificationList();
+        }
+
+        public Qualification GetQualificationByName(string qualificationName)
+        {
+            return adminService.GetQualificationByName(qualificationName);
+        }
+
+        public Qualification AddUpdateQualification(Qualification qualification)
+        {
+            return adminService.AddUpdateQualification(qualification);
+        }
+
+        public Qualification GetQualificationById(int id)
+        {
+            return adminService.GetQualificationById(id);
+        }
+
+        public bool DeleteQualification(int id)
+        {
+            return adminService.DeleteQualification(id);
+        }
+
     }
 }
