@@ -40,6 +40,9 @@ namespace EMS.Entities
 
         [Description("Female")]
         Female = 2,
+
+        [Description("Other")]
+        Other = 3
     }
 
     public enum ContentCode

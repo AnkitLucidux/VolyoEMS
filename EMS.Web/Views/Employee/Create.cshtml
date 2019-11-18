@@ -1,7 +1,7 @@
-﻿@model EMS.Entities.Employee
+﻿@model EMS.Web.ViewModels.EmployeeViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Employee";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -20,11 +20,9 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EmployeeCode" class="control-label"></label>
-                <input asp-for="EmployeeCode" class="form-control" />
-                <span asp-validation-for="EmployeeCode" class="text-danger"></span>
-            </div>
+
+            <input type="hidden" asp-for="EmployeeId" />
+
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -42,22 +40,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <select asp-for="Gender" class="form-control"></select>
+                <select asp-for="Gender" asp-items="Html.GetEnumSelectList<EMS.Entities.Gender>()" class="form-control"></select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-            @*<select asp-for="GenderType" asp-items="Html.GetEnumSelectList<Gender>()">
-                    <option selected="selected" value="">Please select</option>
-                </select>
-
-                <div class="form-group">
-                    <label asp-for="RoleId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6">
-                        <select asp-for="RoleId" asp-items="@Model.Roles" class="form-control">
-                            <option>--Select role--</option>
-                        </select>
-                    </div>
-                </div>*@
-
             <div class="form-group">
                 <label asp-for="DOB" class="control-label"></label>
                 <input asp-for="DOB" class="form-control" />
@@ -80,12 +65,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="PermanentAddress" class="control-label"></label>
-                <input asp-for="PermanentAddress" class="form-control" />
+                <textarea asp-for="PermanentAddress" class="form-control"></textarea>
                 <span asp-validation-for="PermanentAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CommunicationAddress" class="control-label"></label>
-                <input asp-for="CommunicationAddress" class="form-control" />
+                <textarea asp-for="CommunicationAddress" class="form-control"></textarea>
                 <span asp-validation-for="CommunicationAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -120,7 +105,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaritalStatus" class="control-label"></label>
-                <select asp-for="MaritalStatus" class="form-control"></select>
+                <select asp-for="MaritalStatus" asp-items="Html.GetEnumSelectList<EMS.Entities.MaritalStatus>()" class="form-control"></select>
                 <span asp-validation-for="MaritalStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -152,12 +137,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="PrimarySkills" class="control-label"></label>
-                <input asp-for="PrimarySkills" class="form-control" />
+                <textarea asp-for="PrimarySkills" class="form-control"></textarea>
                 <span asp-validation-for="PrimarySkills" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SecondarySkills" class="control-label"></label>
-                <input asp-for="SecondarySkills" class="form-control" />
+                <textarea asp-for="SecondarySkills" class="form-control"></textarea>
                 <span asp-validation-for="SecondarySkills" class="text-danger"></span>
             </div>
             <div class="form-group">

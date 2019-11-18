@@ -17,5 +17,6 @@ namespace EMS.Web.Data
         public DbSet<EMS.Entities.Department> Department { get; set; }
         public DbSet<EMS.Web.ViewModels.RoleViewModel> RoleViewModel { get; set; }
         public DbSet<EMS.Web.ViewModels.UserViewModel> UserViewModel { get; set; }
+        public DbSet<EMS.Web.ViewModels.EmployeeViewModel> EmployeeViewModel { get; set; }
     }
 }
