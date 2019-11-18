@@ -44,6 +44,7 @@ namespace EMS.Services.Service
         {
             return context.Departments.FirstOrDefault(x => x.DepartmentId == id);
         }
+
         public bool DeleteDepartment(int id)
         {
             var deleteDepartment = context.Departments.FirstOrDefault(x => x.DepartmentId == id);
@@ -52,6 +53,52 @@ namespace EMS.Services.Service
                 if (deleteDepartment != null)
                 {
                     context.Departments.Remove(deleteDepartment);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public List<Designation> GetDesignationList()
+        {
+            return context.Designations.ToList();
+        }
+
+        public Designation GetDesignationByName(string designationName)
+        {
+            return context.Designations.FirstOrDefault(x => x.DesignationName == designationName);
+        }
+
+        public Designation GetDesignationById(int id)
+        {
+            return context.Designations.FirstOrDefault(x => x.DesignationId == id);
+        }
+
+        public Designation AddUpdateDesignation(Designation designation)
+        {
+            if (default(int) == designation.DesignationId)
+            {
+                context.Designations.Add(designation);
+            }
+            else
+            {
+                context.Entry(designation).State = EntityState.Modified;
+            }
+            context.SaveChanges();
+            return designation;
+        }
+
+        public bool DeleteDesignation(int id)
+        {
+            var deleteDesignation = context.Designations.FirstOrDefault(x => x.DesignationId == id);
+            try
+            {
+                if (deleteDesignation != null)
+                {
+                    context.Designations.Remove(deleteDesignation);
                     context.SaveChanges();
                 }
                 return true;
