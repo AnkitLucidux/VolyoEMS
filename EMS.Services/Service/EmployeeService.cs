@@ -42,13 +42,19 @@ namespace EMS.Services.Service
                 .Include(designation => designation.Designation).ToList();
         }
 
+        public List<Employee> GetAllActiveEmployees()
+        {
+            return context.Employees.Include(qualification => qualification.Qualification)
+                .Include(department => department.Department)
+                .Include(designation => designation.Designation).Where(m => m.IsActive && !m.IsDeleted).ToList();
+        }
+
         public Employee GetEmployeeById(Guid id)
         {
             return context.Employees.Include(qualification => qualification.Qualification)
                 .Include(department => department.Department)
                 .Include(designation => designation.Designation).Where(m => m.EmployeeId == id).FirstOrDefault();
         }
-
 
         public bool DeleteEmployeeById(Guid id)
         {

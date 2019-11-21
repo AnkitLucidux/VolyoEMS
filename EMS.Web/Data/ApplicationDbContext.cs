@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using EMS.Entities;
+using System.Linq;
 using EMS.Web.ViewModels;
 
 namespace EMS.Web.Data
@@ -14,9 +15,15 @@ namespace EMS.Web.Data
             : base(options)
         {
         }
-        public DbSet<EMS.Entities.Department> Department { get; set; }
-        public DbSet<EMS.Web.ViewModels.RoleViewModel> RoleViewModel { get; set; }
-        public DbSet<EMS.Web.ViewModels.UserViewModel> UserViewModel { get; set; }
-        public DbSet<EMS.Web.ViewModels.EmployeeViewModel> EmployeeViewModel { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
     }
 }

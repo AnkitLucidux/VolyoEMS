@@ -22,7 +22,7 @@ namespace EMS.Web.Controllers
         }
 
         // GET: Role
-        public ActionResult Index()
+        public IActionResult Index()
         {
             List<RoleViewModel> roleList = new List<RoleViewModel>();
             var roles = roleManager.Roles;
@@ -38,7 +38,7 @@ namespace EMS.Web.Controllers
         }
 
         // GET: Role/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -46,7 +46,7 @@ namespace EMS.Web.Controllers
         // POST: Role/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(RoleViewModel model)
+        public async Task<IActionResult> Create(RoleViewModel model)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace EMS.Web.Controllers
                         IdentityResult roleResult = await roleManager.CreateAsync(new IdentityRole(model.RoleName));
                         if (roleResult.Succeeded)
                         {
-                            TempData["ErrorMessage"] = "Role created successfully";
+                            TempData["SuccessMessage"] = "Role created successfully";
                             return RedirectToAction("Index");
                         }
                         else
@@ -81,7 +81,7 @@ namespace EMS.Web.Controllers
         }
 
         // GET: Role/Edit/5
-        public ActionResult Edit(string id)
+        public IActionResult Edit(string id)
         {
             var role = roleManager.FindByIdAsync(id);
             if (role == null)
@@ -99,7 +99,7 @@ namespace EMS.Web.Controllers
         // POST: Role/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(RoleViewModel model)
+        public async Task<IActionResult> Edit(RoleViewModel model)
         {
             try
             {

@@ -20,13 +20,13 @@ namespace EMS.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View(_adminRepository.GetDepartmentList());
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             Department department = new Department();
             return View(department);
@@ -34,7 +34,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Department departmentModel)
+        public IActionResult Create(Department departmentModel)
         {
             try
             {
@@ -61,14 +61,14 @@ namespace EMS.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View(_adminRepository.GetDepartmentById(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Department departmentModel)
+        public IActionResult Edit(Department departmentModel)
         {
             try
             {
@@ -98,15 +98,9 @@ namespace EMS.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //[HttpGet]
-        //public ActionResult Delete()
-        //{
-        //    return View();
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {

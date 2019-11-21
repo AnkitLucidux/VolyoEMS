@@ -6,14 +6,16 @@
 
 <h1>@ViewData["Title"]</h1>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <p class="text-danger">@TempData["ErrorMessage"]</p>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <p class="text-success">@TempData["SuccessMessage"]</p>
-}
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -25,7 +27,7 @@
                 @Html.DisplayNameFor(model => model.EmployeeCode)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayName("Name")
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EmailAddress)
@@ -42,12 +44,13 @@
     <tbody>
         @foreach (var item in Model)
         {
+            var fullName = item.FirstName + (item.MiddileName != null ? " " + item.MiddileName + " " + item.LastName : " " + item.LastName);
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.EmployeeCode)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @Html.DisplayName(fullName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.EmailAddress)
@@ -62,6 +65,14 @@
                     <form asp-action="Delete" asp-route-id="@item.EmployeeId" method="post">
                         <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a>
                         <a class="btn btn-info" asp-action="Details" asp-route-id="@item.EmployeeId">Details</a>
+                        @if (item.IsActive && !item.IsDeleted)
+                        {
+                            <a class="btn btn-danger" asp-action="Deactivate" asp-route-id="@item.EmployeeId" asp-route-type="deactive">Deactivate</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-success" asp-action="Activate" asp-route-id="@item.EmployeeId" asp-route-type="active">Activate</a>
+                        }
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Employeee : @item.FirstName ?')">Delete</button>
                     </form>
                 </td>

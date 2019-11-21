@@ -25,6 +25,11 @@ namespace EMS.Web.Repositories
             return userService.AddUpdateUser(user);
         }
 
+        public List<User> GetAllActiveUsers()
+        {
+            return userService.GetAllActiveUsers();
+        }
+
         public List<User> GetAllUsers()
         {
             return userService.GetAllUsers();
@@ -33,6 +38,11 @@ namespace EMS.Web.Repositories
         public User GetUserById(Guid id)
         {
             return userService.GetUserById(id);
+        }
+
+        public bool DeleteUserById(Guid id)
+        {
+            return userService.DeleteUserById(id);
         }
     }
 }

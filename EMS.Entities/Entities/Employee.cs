@@ -34,7 +34,7 @@ namespace EMS.Entities
 
         [Required(ErrorMessage = "DOB required.")]
         [DisplayName("DOB")]
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
 
         [Required(ErrorMessage = "EmailAddress required.")]
         [DisplayName("EmailAddress")]
@@ -78,19 +78,19 @@ namespace EMS.Entities
         public string PassportNumber { get; set; }
 
         [DisplayName("Passport Expiry Date")]
-        public DateTime PassportExpDate { get; set; }
+        public DateTime? PassportExpDate { get; set; }
 
         [DisplayName("Marital Status ")]
         public MaritalStatus MaritalStatus { get; set; }
 
         [DisplayName("Joining Date")]
-        public DateTime JoiningDate { get; set; }
+        public DateTime? JoiningDate { get; set; }
 
         [DisplayName("Total Experience")]
-        public decimal TotalExperience { get; set; }
+        public decimal? TotalExperience { get; set; }
 
         [DisplayName("Past Experience")]
-        public decimal PastExperience { get; set; }
+        public decimal? PastExperience { get; set; }
 
         [DisplayName("Primary Skills")]
         public string PrimarySkills { get; set; }

@@ -12,6 +12,10 @@ namespace EMS.Services.IService
 
         List<User> GetAllUsers();
 
+        List<User> GetAllActiveUsers();
+
         User GetUserById(Guid id);
+
+        bool DeleteUserById(Guid id);
     }
 }

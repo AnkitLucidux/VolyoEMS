@@ -3,15 +3,16 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-@if (TempData["ErrorMessage"] != null)
-{
-    <p class="text-danger">@TempData["ErrorMessage"]</p>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <p class="text-success">@TempData["SuccessMessage"]</p>
-}
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
 
 <div>
     <h4>Employee</h4>

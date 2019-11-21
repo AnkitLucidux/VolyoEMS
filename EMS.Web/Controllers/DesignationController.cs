@@ -17,13 +17,13 @@ namespace EMS.Web.Controllers
             _adminRepository = adminRepository;
         }
         // GET: Designation
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View(_adminRepository.GetDesignationList());
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             Designation designation = new Designation();
             return View(designation);
@@ -31,7 +31,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Designation designationModel)
+        public IActionResult Create(Designation designationModel)
         {
             try
             {
@@ -58,7 +58,7 @@ namespace EMS.Web.Controllers
         }
 
         // GET: Designation/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View(_adminRepository.GetDesignationById(id));
         }
@@ -66,7 +66,7 @@ namespace EMS.Web.Controllers
         // POST: Designation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Designation designationModel)
+        public IActionResult Edit(Designation designationModel)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {

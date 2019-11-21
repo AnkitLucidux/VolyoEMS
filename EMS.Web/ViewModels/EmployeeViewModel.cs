@@ -1,14 +1,11 @@
 ﻿using EMS.Entities;
-using System;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EMS.Web.ViewModels
 {
-    public class EmployeeViewModel : EntityBaseClass
+    public class EmployeeViewModel
     {
         [Key]
         public int Id { get; set; }
@@ -26,6 +23,8 @@ namespace EMS.Web.ViewModels
         public List<Designation> DesignationList { get; set; }
 
         public List<Employee> EmployeeList { get; set; }
+
+        public List<SelectListItem> ReportToList { get; set; }
 
         public Employee Employee { get; set; }
     }

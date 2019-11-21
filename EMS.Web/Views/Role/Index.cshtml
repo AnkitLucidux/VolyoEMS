@@ -10,14 +10,16 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <p class="text-danger">@TempData["ErrorMessage"]</p>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <p class="text-success">@TempData["SuccessMessage"]</p>
-}
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
 
 <table class="table">
     <thead>
@@ -38,7 +40,6 @@
                 <td>
                     <form asp-action="Delete" asp-route-id="@role.RoleId" method="post">
                         <a asp-action="Edit" asp-route-id="@role.RoleId" class="btn btn-primary">Edit</a>
-                        <a asp-action="Detail" asp-route-id="@role.RoleId" class="btn btn-info">Detail</a>
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Role : @role.RoleName ?')">Delete</button>
                     </form>
                 </td>

@@ -27,10 +27,6 @@ namespace EMS.Entities.DBContext
             {
                 foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
             }
-
-
         }
-
-
     }
 }

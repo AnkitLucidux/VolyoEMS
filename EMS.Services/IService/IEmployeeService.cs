@@ -9,6 +9,8 @@ namespace EMS.Services.IService
     {
         Employee AddUpdateEmployee(Employee user);
 
+        List<Employee> GetAllActiveEmployees();
+
         List<Employee> GetAllEmployees();
 
         Employee GetEmployeeById(Guid id);

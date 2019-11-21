@@ -20,13 +20,13 @@ namespace EMS.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult Index()
         {
             return View(_adminRepository.GetQualificationList());
         }
 
         [HttpGet]
-        public ActionResult Create()
+        public IActionResult Create()
         {
             Qualification qualification = new Qualification();
             return View(qualification);
@@ -34,7 +34,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Qualification qualificationModel)
+        public IActionResult Create(Qualification qualificationModel)
         {
             try
             {
@@ -61,14 +61,14 @@ namespace EMS.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
             return View(_adminRepository.GetQualificationById(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Qualification qualificationModel)
+        public IActionResult Edit(Qualification qualificationModel)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             try
             {

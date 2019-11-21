@@ -4,14 +4,16 @@ using EMS.Entities.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EMS.Entities.Migrations
 {
     [DbContext(typeof(EMSDbContext))]
-    partial class EMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191119100637_UpdatedBaseEntity")]
+    partial class UpdatedBaseEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +65,7 @@ namespace EMS.Entities.Migrations
 
                     b.Property<DateTime>("CreatedDate");
 
-                    b.Property<DateTime?>("DOB")
-                        .IsRequired();
+                    b.Property<DateTime>("DOB");
 
                     b.Property<int>("DepartmentId");
 
@@ -89,7 +90,7 @@ namespace EMS.Entities.Migrations
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("JoiningDate");
+                    b.Property<DateTime>("JoiningDate");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -114,12 +115,12 @@ namespace EMS.Entities.Migrations
                     b.Property<string>("PanNumber")
                         .HasMaxLength(20);
 
-                    b.Property<DateTime?>("PassportExpDate");
+                    b.Property<DateTime>("PassportExpDate");
 
                     b.Property<string>("PassportNumber")
                         .HasMaxLength(20);
 
-                    b.Property<decimal?>("PastExperience");
+                    b.Property<decimal>("PastExperience");
 
                     b.Property<string>("PermanentAddress");
 
@@ -134,7 +135,7 @@ namespace EMS.Entities.Migrations
 
                     b.Property<string>("SecondarySkills");
 
-                    b.Property<decimal?>("TotalExperience");
+                    b.Property<decimal>("TotalExperience");
 
                     b.HasKey("EmployeeId");
 

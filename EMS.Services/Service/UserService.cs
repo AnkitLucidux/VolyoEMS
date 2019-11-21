@@ -41,9 +41,32 @@ namespace EMS.Services.Service
             return context.Users.ToList();
         }
 
+        public List<User> GetAllActiveUsers()
+        {
+            return context.Users.Where(m => m.IsActive && !m.IsDeleted).ToList();
+        }
+
         public User GetUserById(Guid id)
         {
             return context.Users.Where(m => m.UserId == id).FirstOrDefault();
+        }
+
+        public bool DeleteUserById(Guid id)
+        {
+            try
+            {
+                var result = context.Users.FirstOrDefault(m => m.UserId == id);
+                if (result != null)
+                {
+                    context.Users.Remove(result);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

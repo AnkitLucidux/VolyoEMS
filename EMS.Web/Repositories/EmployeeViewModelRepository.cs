@@ -23,6 +23,11 @@ namespace EMS.Web.Repositories
             return employeeService.AddUpdateEmployee(user);
         }
 
+        public List<Employee> GetAllActiveEmployees()
+        {
+            return employeeService.GetAllActiveEmployees();
+        }
+
         public List<Employee> GetAllEmployees()
         {
             return employeeService.GetAllEmployees();

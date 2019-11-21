@@ -6,14 +6,25 @@
 
 <h1>Edit</h1>
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <p class="text-danger">@TempData["ErrorMessage"]</p>
-}
-@if (TempData["SuccessMessage"] != null)
-{
-    <p class="text-success">@TempData["SuccessMessage"]</p>
-}
+<div class="validation-message">
+    @if (ViewBag.EmailExist != null)
+    {
+        <p class="alert-danger">@ViewBag.EmailExist</p>
+    }
+    @if (ViewBag.MobileExist != null)
+    {
+        <p class="alert-danger">@ViewBag.MobileExist</p>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
 
 <hr />
 <div class="row">
@@ -24,7 +35,7 @@
 
             <div class="form-group">
                 <label asp-for="Employee.EmployeeCode" class="control-label"></label>
-                <input asp-for="Employee.EmployeeCode" class="form-control" />
+                <input asp-for="Employee.EmployeeCode" class="form-control" readonly />
                 <span asp-validation-for="Employee.EmployeeCode" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -154,18 +165,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="Employee.ReportTo" class="control-label"></label>
-                <input asp-for="Employee.ReportTo" class="form-control" />
+                <select asp-for="Employee.ReportTo" asp-items="@(new SelectList(Model.ReportToList,"Value","Text"))" class="form-control">
+                    <option value="">--Select--</option>
+                </select>
                 <span asp-validation-for="Employee.ReportTo" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Employee.IsActive" /> @Html.DisplayNameFor(model => model.Employee.IsActive)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Employee.IsDeleted" /> @Html.DisplayNameFor(model => model.Employee.IsDeleted)
-                </label>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
