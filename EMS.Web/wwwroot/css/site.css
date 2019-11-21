@@ -133,3 +133,19 @@ nav {
             font-size: 18px;
         }
 }
+
+/*Default styling for buttons*/
+button {
+    border: 0;
+    padding: 0;
+    background: none;
+}
+
+.icon {
+    height: 50px;
+    width: 50px;
+}
+
+h1 {
+    text-align: center;
+}

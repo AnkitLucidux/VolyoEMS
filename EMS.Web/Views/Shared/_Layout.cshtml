@@ -16,6 +16,7 @@
               crossorigin="anonymous"
               integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
     </environment>
+    <link href="~/lib/datepicker/datepicker.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -46,13 +47,13 @@
                         <a class="nav-link" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
+                        <a class="nav-link" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Designation" asp-action="Index">Designation</a>
+                        <a class="nav-link" asp-area="" asp-controller="Designation" asp-action="Index">Designations</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Qualification" asp-action="Index">Qualification</a>
+                        <a class="nav-link" asp-area="" asp-controller="Qualification" asp-action="Index">Qualifications</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
@@ -76,7 +77,10 @@
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+        <script src="~/lib/datepicker/datepicker.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"

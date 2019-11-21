@@ -1,6 +1,10 @@
 ﻿$(document).ready(function () {
     $('.alert-success').delay(10000).fadeOut();
     $('.alert-danger').delay(10000).fadeOut();
+
+    $("#Employee_DOB,#Employee_PassportExpDate,#Employee_JoiningDate").datepicker({
+        "format": "dd-MM-yyyy"
+    });
 });
 
 function openNav() {

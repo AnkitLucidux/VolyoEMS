@@ -54,10 +54,11 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(EmployeeViewModel model)
         {
+            ModelState.Remove("Employee.EmployeeId");
             if (ModelState.IsValid)
             {
                 var lastEmpCode = 0;
-                var activeEmployee = employeeViewModelRepository.GetAllActiveEmployees();
+                var activeEmployee = employeeViewModelRepository.GetAllEmployees();
                 if (activeEmployee.Count > 0)
                 {
                     lastEmpCode = activeEmployee.OrderByDescending(o => o.CreatedDate).FirstOrDefault().EmployeeCode;

@@ -12,6 +12,7 @@ namespace EMS.Entities
         [Key]
         public Guid EmployeeId { get; set; }
 
+        [DisplayName("Employee Code")]
         public int EmployeeCode { get; set; }
 
         [Required(ErrorMessage = "First Name required.")]
@@ -34,12 +35,15 @@ namespace EMS.Entities
 
         [Required(ErrorMessage = "DOB required.")]
         [DisplayName("DOB")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? DOB { get; set; }
 
-        [Required(ErrorMessage = "EmailAddress required.")]
-        [DisplayName("EmailAddress")]
+        [Required(ErrorMessage = "Email address required.")]
+        [DisplayName("Email Address")]
+        [EmailAddress]
         [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '50'.")]
-        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Email is not valid")]
+        //[RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Email is not valid")]
         public string EmailAddress { get; set; }
 
         [DisplayName("Father's Name")]
@@ -101,10 +105,13 @@ namespace EMS.Entities
         [DisplayName("Report To")]
         public string ReportTo { get; set; }
 
+        [DisplayName("Qualification")]
         public int QualificationId { get; set; }
 
+        [DisplayName("Department")]
         public int DepartmentId { get; set; }
 
+        [DisplayName("Designation")]
         public int DesignationId { get; set; }
 
         [ForeignKey("QualificationId")]

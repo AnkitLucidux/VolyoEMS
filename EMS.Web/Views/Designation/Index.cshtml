@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<EMS.Entities.Designation>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Designation Management";
 }
 
-<h1>Index</h1>
+<h1>@ViewData["Title"]</h1>
 
 <div class="validation-message">
     @if (TempData["ErrorMessage"] != null)
@@ -18,7 +18,7 @@
 </div>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -38,8 +38,8 @@
                 </td>
                 <td>
                     <form asp-action="Delete" asp-route-id="@item.DesignationId" method="post">
-                        <a asp-action="Edit" asp-route-id="@item.DesignationId" class="btn btn-primary">Edit</a>
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Department :@item.DesignationName ?')">Delete</button>
+                        <a asp-action="Edit" asp-route-id="@item.DesignationId"><img src="~/Images/Icons/edit.png" title="Edit" class="icon" /></a>
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete Department :@item.DesignationName ?')"><img src="~/Images/Icons/delete.png" title="Delete" class="icon" /></button>
                     </form>
                 </td>
             </tr>

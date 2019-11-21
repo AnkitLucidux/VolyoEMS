@@ -1,10 +1,11 @@
 ﻿@model EMS.Entities.Designation
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Designation";
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
+
 <div class="validation-message">
     @if (TempData["ErrorMessage"] != null)
     {

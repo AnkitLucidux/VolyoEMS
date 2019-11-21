@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<EMS.Entities.Employee>
 
 @{
-    ViewData["Title"] = "Employee List";
+    ViewData["Title"] = "Employees";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -18,7 +18,7 @@
 </div>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -63,17 +63,17 @@
                 </td>
                 <td>
                     <form asp-action="Delete" asp-route-id="@item.EmployeeId" method="post">
-                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a>
-                        <a class="btn btn-info" asp-action="Details" asp-route-id="@item.EmployeeId">Details</a>
+                        <a class="" asp-action="Edit" asp-route-id="@item.EmployeeId"><img src="~/Images/Icons/edit.png" title="Edit" class="icon" /></a>
+                        <a class="" asp-action="Details" asp-route-id="@item.EmployeeId"><img src="~/Images/Icons/detail.png" title="Detail" class="icon" /></a>
+                        <button type="submit" class="" onclick="return confirm('Are you sure you want to delete Employeee : @item.FirstName ?')"><img src="~/Images/Icons/delete.png" title="Delete" class="icon" /></button>
                         @if (item.IsActive && !item.IsDeleted)
                         {
-                            <a class="btn btn-danger" asp-action="Deactivate" asp-route-id="@item.EmployeeId" asp-route-type="deactive">Deactivate</a>
+                            <a class="" asp-action="Deactivate" asp-route-id="@item.EmployeeId" asp-route-type="deactive"><img src="~/Images/Icons/tick.png" title="Click to deactivate" class="icon" /></a>
                         }
                         else
                         {
-                            <a class="btn btn-success" asp-action="Activate" asp-route-id="@item.EmployeeId" asp-route-type="active">Activate</a>
+                            <a class="" asp-action="Activate" asp-route-id="@item.EmployeeId" asp-route-type="active"><img src="~/Images/Icons/multiply.png" title="Click to activate" class="icon" /></a>
                         }
-                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete Employeee : @item.FirstName ?')">Delete</button>
                     </form>
                 </td>
             </tr>
