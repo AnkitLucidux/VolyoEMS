@@ -24,5 +24,17 @@ namespace EMS.Services.IService
         Qualification AddUpdateQualification(Qualification qualification);
         Qualification GetQualificationById(int id);
         bool DeleteQualification(int id);
+
+        List<LeaveType> GetLeaveTypeList();
+        LeaveType GetLeaveTypeByName(string leaveTypeName);
+        LeaveType AddUpdateLeaveType(LeaveType leaveType);
+        LeaveType GetLeaveTypeById(int id);
+        bool DeleteLeaveType(int id);
+
+        List<Holiday> GetHolidayList();
+        Holiday GetHolidayByName(string holidayName);
+        Holiday AddUpdateHoliday(Holiday holiday);
+        Holiday GetHolidayById(int id);
+        bool DeleteHoliday(int id);
     }
 }
