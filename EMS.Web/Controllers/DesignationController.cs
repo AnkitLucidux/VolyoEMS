@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using EMS.Entities;
 using EMS.Web.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.Web.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DesignationController : Controller
     {
         private readonly AdminRepository _adminRepository;

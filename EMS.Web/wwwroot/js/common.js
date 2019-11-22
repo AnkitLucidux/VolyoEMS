@@ -2,8 +2,13 @@
     $('.alert-success').delay(10000).fadeOut();
     $('.alert-danger').delay(10000).fadeOut();
 
-    $("#Employee_DOB,#Employee_PassportExpDate,#Employee_JoiningDate").datepicker({
+    $(".datepicker").datepicker({
         "format": "dd-MM-yyyy"
+    });
+
+    $("#HolidayDate").datepicker({
+        "format": "dd-MM-yyyy",
+        beforeShowDay: $.datepicker.noWeekends
     });
 });
 

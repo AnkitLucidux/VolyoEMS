@@ -40,6 +40,7 @@ namespace EMS.Services.Service
             context.SaveChanges();
             return department;
         }
+
         public Department GetDepartmentById(int id)
         {
             return context.Departments.FirstOrDefault(x => x.DepartmentId == id);
@@ -148,6 +149,102 @@ namespace EMS.Services.Service
                 if (deleteQualification != null)
                 {
                     context.Qualifications.Remove(deleteQualification);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        //Methods for leave types
+        public List<LeaveType> GetLeaveTypeList()
+        {
+            return context.LeaveTypes.ToList();
+        }
+
+        public LeaveType GetLeaveTypeByName(string leaveTypeName)
+        {
+            return context.LeaveTypes.FirstOrDefault(x => x.LeaveTypeName == leaveTypeName);
+        }
+
+        public LeaveType AddUpdateLeaveType(LeaveType leaveType)
+        {
+            if (default(int) == leaveType.LeaveTypeId)
+            {
+                context.LeaveTypes.Add(leaveType);
+            }
+            else
+            {
+                context.Entry(leaveType).State = EntityState.Modified;
+            }
+            context.SaveChanges();
+            return leaveType;
+        }
+
+        public LeaveType GetLeaveTypeById(int id)
+        {
+            return context.LeaveTypes.FirstOrDefault(x => x.LeaveTypeId == id);
+        }
+
+        public bool DeleteLeaveType(int id)
+        {
+            var deletedLeaveType = context.LeaveTypes.FirstOrDefault(x => x.LeaveTypeId == id);
+            try
+            {
+                if (deletedLeaveType != null)
+                {
+                    context.LeaveTypes.Remove(deletedLeaveType);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        //Methods for holidays
+        public List<Holiday> GetHolidayList()
+        {
+            return context.Holidays.ToList();
+        }
+
+        public Holiday GetHolidayByName(string holidayName)
+        {
+            return context.Holidays.FirstOrDefault(x => x.HolidayName == holidayName);
+        }
+
+        public Holiday AddUpdateHoliday(Holiday holiday)
+        {
+            if (default(int) == holiday.HolidayId)
+            {
+                context.Holidays.Add(holiday);
+            }
+            else
+            {
+                context.Entry(holiday).State = EntityState.Modified;
+            }
+            context.SaveChanges();
+            return holiday;
+        }
+
+        public Holiday GetHolidayById(int id)
+        {
+            return context.Holidays.FirstOrDefault(x => x.HolidayId == id);
+        }
+
+        public bool DeleteHoliday(int id)
+        {
+            var deletedHoliday = context.Holidays.FirstOrDefault(x => x.HolidayId == id);
+            try
+            {
+                if (deletedHoliday != null)
+                {
+                    context.Holidays.Remove(deletedHoliday);
                     context.SaveChanges();
                 }
                 return true;

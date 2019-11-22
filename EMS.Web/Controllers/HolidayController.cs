@@ -11,21 +11,22 @@ namespace EMS.Web.Controllers
 {
     public class HolidayController : Controller
     {
-        private readonly AdminRepository _adminRepository;
+        private readonly AdminRepository adminRepository;
         public HolidayController(AdminRepository adminRepository)
         {
-            _adminRepository = adminRepository;
+            this.adminRepository = adminRepository;
         }
 
         public ActionResult Index()
         {
-            return View(_adminRepository.GetAllHolidayList());
+            return View(adminRepository.GetHolidayList());
         }
 
         // GET: Holiday/Create
         public ActionResult Create()
         {
-            return View();
+            Holiday holiday = new Holiday();
+            return View(holiday);
         }
 
         // POST: Holiday/Create
@@ -33,74 +34,81 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Holiday holidayModel)
         {
-            try
-            {
-                var checkHoliday = _adminRepository.GetHolidayByName(holidayModel.HolidayName);
+            var checkHoliday = adminRepository.GetHolidayByName(holidayModel.HolidayName);
 
-                if (checkHoliday != null)
-                {
-                    this.TempData["ErrorMessage"] = "This holiday is already exists!";
-                    return View(holidayModel);
-                }
-
-                var addHoliday = _adminRepository.AddUpdateHoliday(holidayModel);
-                if (addHoliday != null)
-                {
-                    this.TempData["SuccessMessage"] = "Holiday added Successfully";
-                }
-            }
-            catch (Exception ex)
+            if (checkHoliday != null)
             {
-                this.TempData["ErrorMessage"] = "Something Went Wrong. Please try again!";
-                return View();
+                this.TempData["ErrorMessage"] = "This holiday is already exists!";
+                return View(holidayModel);
             }
+
+            var addedHoliday = adminRepository.AddUpdateHoliday(holidayModel);
+            if (addedHoliday != null)
+            {
+                this.TempData["SuccessMessage"] = "Holiday added Successfully";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+            }
+
             return RedirectToAction("Index");
         }
 
-        // GET: Holiday/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public IActionResult Edit(int id)
         {
-            return View();
+            return View(adminRepository.GetHolidayById(id));
         }
 
-        // POST: Holiday/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(Holiday model)
+        {
+
+            var checkHoliday = adminRepository.GetHolidayByName(model.HolidayName);
+
+            if (checkHoliday != null)
+            {
+                if (checkHoliday == null || checkHoliday.HolidayId != model.HolidayId)
+                {
+                    this.TempData["ErrorMessage"] = "This holiday is already exists.";
+                    return View(model);
+                }
+            }
+
+            checkHoliday = adminRepository.GetHolidayById(model.HolidayId);
+            checkHoliday.HolidayName = model.HolidayName;
+            var updatedHoliday = adminRepository.AddUpdateHoliday(checkHoliday);
+            if (updatedHoliday != null)
+            {
+                this.TempData["SuccessMessage"] = "Holiday updated Successfully";
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteLeaveType(int id)
         {
             try
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction(nameof(Index));
+                var result = adminRepository.DeleteHoliday(id);
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Holiday deleted Successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                }
             }
             catch
             {
-                return View();
+                this.TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
             }
-        }
-
-        // GET: Holiday/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Holiday/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

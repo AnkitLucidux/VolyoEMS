@@ -1,0 +1,49 @@
+﻿@model IEnumerable<EMS.Entities.LeaveType>
+
+@{
+    ViewData["Title"] = "Leave Types";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateLeaveType">Create New</a>
+</p>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveTypeName)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveTypeName)
+                </td>
+                <td>
+                    <form asp-action="DeleteLeaveType" asp-route-id="@item.LeaveTypeId" method="post">
+                        <a asp-action="EditLeaveType" asp-route-id="@item.LeaveTypeId"><img src="~/Images/Icons/edit.png" title="Edit" class="icon" /></a>
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete leave type : @item.LeaveTypeName ?')"><img src="~/Images/Icons/delete.png" title="Delete" class="icon" /></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

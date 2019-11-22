@@ -1,0 +1,49 @@
+﻿@model EMS.Entities.Holiday
+
+@{
+    ViewData["Title"] = "Create Leave Type";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="HolidayDate" class="control-label"></label>
+                <input type="text" asp-for="HolidayDate" class="form-control" />
+                <span asp-validation-for="HolidayDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HolidayName" class="control-label"></label>
+                <input asp-for="HolidayName" class="form-control" />
+                <span asp-validation-for="HolidayName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

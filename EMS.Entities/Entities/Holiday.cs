@@ -12,11 +12,12 @@ namespace EMS.Entities
         public int HolidayId { get; set; }
 
         [Required(ErrorMessage = "Holiday date required.")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         [DisplayName("Holiday date")]
-        public DateTime HolidayDate { get; set; }
+        public DateTime? HolidayDate { get; set; }
 
         [Required(ErrorMessage = "Holiday name required.")]
-        [StringLength(50, ErrorMessage = "The field {0} must be a maximum length of '50'.")]
         [DisplayName("Holiday Name")]
         public string HolidayName { get; set; }
     }

@@ -93,5 +93,54 @@ namespace EMS.Web.Repositories
             return adminService.DeleteQualification(id);
         }
 
+        public List<LeaveType> GetLeaveTypeList()
+        {
+            return adminService.GetLeaveTypeList();
+        }
+
+        public LeaveType GetLeaveTypeByName(string leaveTypeName)
+        {
+            return adminService.GetLeaveTypeByName(leaveTypeName);
+        }
+
+        public LeaveType AddUpdateLeaveType(LeaveType leaveType)
+        {
+            return adminService.AddUpdateLeaveType(leaveType);
+        }
+
+        public LeaveType GetLeaveTypeById(int id)
+        {
+            return adminService.GetLeaveTypeById(id);
+        }
+
+        public bool DeleteLeaveType(int id)
+        {
+            return adminService.DeleteLeaveType(id);
+        }
+
+        public List<Holiday> GetHolidayList()
+        {
+            return adminService.GetHolidayList();
+        }
+
+        public Holiday GetHolidayByName(string holidayName)
+        {
+            return adminService.GetHolidayByName(holidayName);
+        }
+
+        public Holiday AddUpdateHoliday(Holiday holiday)
+        {
+            return adminService.AddUpdateHoliday(holiday);
+        }
+
+        public Holiday GetHolidayById(int id)
+        {
+            return adminService.GetHolidayById(id);
+        }
+
+        public bool DeleteHoliday(int id)
+        {
+            return adminService.DeleteHoliday(id);
+        }
     }
 }

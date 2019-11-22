@@ -4,14 +4,16 @@ using EMS.Entities.DBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EMS.Entities.Migrations
 {
     [DbContext(typeof(EMSDbContext))]
-    partial class EMSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191121113850_AddedLeaveTypeEntity")]
+    partial class AddedLeaveTypeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,24 +149,7 @@ namespace EMS.Entities.Migrations
                     b.ToTable("Employees");
                 });
 
-            modelBuilder.Entity("EMS.Entities.Holiday", b =>
-                {
-                    b.Property<int>("HolidayId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("HolidayDate")
-                        .IsRequired();
-
-                    b.Property<string>("HolidayName")
-                        .IsRequired();
-
-                    b.HasKey("HolidayId");
-
-                    b.ToTable("Holidays");
-                });
-
-            modelBuilder.Entity("EMS.Entities.LeaveType", b =>
+            modelBuilder.Entity("EMS.Entities.Entities.LeaveType", b =>
                 {
                     b.Property<int>("LeaveTypeId")
                         .ValueGeneratedOnAdd()

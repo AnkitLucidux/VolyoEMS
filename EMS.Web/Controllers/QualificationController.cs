@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EMS.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class QualificationController : Controller
     {
         private readonly AdminRepository _adminRepository;
