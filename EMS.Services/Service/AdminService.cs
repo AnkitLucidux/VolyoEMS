@@ -213,6 +213,11 @@ namespace EMS.Services.Service
             return context.Holidays.ToList();
         }
 
+        public Holiday GetHolidayByDate(DateTime? holidayDate)
+        {
+            return context.Holidays.FirstOrDefault(x => x.HolidayDate == holidayDate);
+        }
+
         public Holiday GetHolidayByName(string holidayName)
         {
             return context.Holidays.FirstOrDefault(x => x.HolidayName == holidayName);
@@ -253,6 +258,69 @@ namespace EMS.Services.Service
             {
                 return false;
             }
+        }
+
+        //Employee Leave Balance
+        public List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList()
+        {
+            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).ToList();
+        }
+
+        public EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id)
+        {
+            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).FirstOrDefault(x => x.LeaveBalanceId == id);
+        }
+
+        public EmployeeLeaveBalance AddUpdateEmployeeLeaveBalance(EmployeeLeaveBalance employeeLeaveBalance)
+        {
+            if (default(int) == employeeLeaveBalance.LeaveBalanceId)
+            {
+                context.EmployeeLeaveBalances.Add(employeeLeaveBalance);
+            }
+            else
+            {
+                context.Entry(employeeLeaveBalance).State = EntityState.Modified;
+            }
+            context.SaveChanges();
+            return employeeLeaveBalance;
+        }
+
+        public bool DeleteEmployeeLeaveBalance(int id)
+        {
+            var deletedBalance = context.EmployeeLeaveBalances.FirstOrDefault(x => x.LeaveBalanceId == id);
+            try
+            {
+                if (deletedBalance != null)
+                {
+                    context.EmployeeLeaveBalances.Remove(deletedBalance);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public EmployeeLeave ApplyEmployeeLeave(EmployeeLeave employeeLeave)
+        {
+            if (default(Guid) == employeeLeave.EmployeeLeaveId)
+            {
+                context.EmployeeLeaves.Add(employeeLeave);
+            }
+            context.SaveChanges();
+            return employeeLeave;
+        }
+
+        public List<EmployeeLeave> GetEmployeeLeavesByEmpId(Guid empId)
+        {
+            return context.EmployeeLeaves.Where(x => x.EmployeeId == empId).ToList();
+        }
+
+        public List<EmployeeLeave> GetEmployeeLeaves()
+        {
+            return context.EmployeeLeaves.Include(employee => employee.Employee).Include(type => type.LeaveType).ToList();
         }
     }
 }

@@ -7,6 +7,18 @@
 <h1>@ViewData["Title"]</h1>
 
 <div class="validation-message">
+    @if (ViewBag.WeekendExist != null)
+    {
+        <p class="alert-danger">@ViewBag.WeekendExist</p>
+    }
+    @if (ViewBag.DateExistsError != null)
+    {
+        <p class="alert-danger">@ViewBag.DateExistsError </p>
+    }
+    @if (ViewBag.NameExistsError != null)
+    {
+        <p class="alert-danger">@ViewBag.NameExistsError</p>
+    }
     @if (TempData["ErrorMessage"] != null)
     {
         <p class="alert-danger">@TempData["ErrorMessage"]</p>

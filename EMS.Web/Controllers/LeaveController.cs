@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using EMS.Entities;
 using EMS.Web.Repositories;
+using EMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace EMS.Web.Controllers
 {
@@ -14,9 +17,12 @@ namespace EMS.Web.Controllers
     public class LeaveController : Controller
     {
         private readonly AdminRepository adminRepository;
-        public LeaveController(AdminRepository adminRepository)
+        private readonly EmployeeViewModelRepository employeeViewModelRepository;
+
+        public LeaveController(AdminRepository adminRepository, EmployeeViewModelRepository employeeViewModelRepository)
         {
             this.adminRepository = adminRepository;
+            this.employeeViewModelRepository = employeeViewModelRepository;
         }
 
         [HttpGet]
@@ -113,5 +119,293 @@ namespace EMS.Web.Controllers
             }
             return RedirectToAction("LeaveTypes");
         }
+
+        [HttpGet]
+        public IActionResult LeaveBalances()
+        {
+            return View(adminRepository.GetEmployeeLeaveBalanceList());
+        }
+
+        [HttpGet]
+        public IActionResult CreateLeaveBalance()
+        {
+            EmployeeLeaveBalanceViewModel employeeLeaveBalanceViewModel = new EmployeeLeaveBalanceViewModel();
+
+            var leaveBalancesEmployee = adminRepository.GetEmployeeLeaveBalanceList();
+            var allActiveEmployee = employeeViewModelRepository.GetAllActiveEmployees();
+
+            employeeLeaveBalanceViewModel.EmployeeList = allActiveEmployee.Where(m => !leaveBalancesEmployee.Any(s => s.Employee.EmailAddress == m.EmailAddress)).ToList();
+            if (employeeLeaveBalanceViewModel.EmployeeList.Count <= 0)
+            {
+                TempData["ErrorMessage"] = "All employee leave balance is occupied, You can update existing employee leave balance or delete to create new.";
+                return RedirectToAction("LeaveBalances");
+            }
+            return View(employeeLeaveBalanceViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateLeaveBalance(EmployeeLeaveBalanceViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var leaveTypes = adminRepository.GetLeaveTypeByName("CL");
+                model.EmployeeLeaveBalance.LeaveTypeId = adminRepository.GetLeaveTypeByName("CL").LeaveTypeId;
+                var addedLeaveBalance = adminRepository.AddUpdateEmployeeLeaveBalance(model.EmployeeLeaveBalance);
+                if (addedLeaveBalance != null)
+                {
+                    TempData["SuccessMessage"] = "Leave balance added Successfully";
+                    return RedirectToAction("LeaveBalances");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                }
+            }
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EditLeaveBalance(int id)
+        {
+            EmployeeLeaveBalanceViewModel model = new EmployeeLeaveBalanceViewModel();
+            if (ModelState.IsValid)
+            {
+                model = new EmployeeLeaveBalanceViewModel();
+                model.EmployeeLeaveBalance = adminRepository.GetEmployeeLeaveBalanceById(id);
+            }
+            //model.EmployeeList = employeeViewModelRepository.GetAllActiveEmployees();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditLeaveBalance(EmployeeLeaveBalanceViewModel model)
+        {
+            var checkedLeaveBalance = adminRepository.GetEmployeeLeaveBalanceById(model.EmployeeLeaveBalance.LeaveBalanceId);
+
+            if (checkedLeaveBalance != null && checkedLeaveBalance.EmployeeId == model.EmployeeLeaveBalance.EmployeeId)
+            {
+                checkedLeaveBalance.LeaveBalanceId = model.EmployeeLeaveBalance.LeaveBalanceId;
+                checkedLeaveBalance.EmployeeId = model.EmployeeLeaveBalance.EmployeeId;
+                checkedLeaveBalance.LeaveBalance = model.EmployeeLeaveBalance.LeaveBalance;
+
+                var updatedLeaveBalance = adminRepository.AddUpdateEmployeeLeaveBalance(checkedLeaveBalance);
+                if (updatedLeaveBalance != null)
+                {
+                    this.TempData["SuccessMessage"] = "Leave type updated Successfully";
+                    return RedirectToAction("LeaveBalances");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+            }
+
+            //model.EmployeeList = employeeViewModelRepository.GetAllActiveEmployees();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteLeaveBalance(int id)
+        {
+            try
+            {
+                var result = adminRepository.DeleteEmployeeLeaveBalance(id);
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "LeaveType deleted Successfully";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                }
+            }
+            catch
+            {
+                this.TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+            }
+            return RedirectToAction("LeaveBalances");
+        }
+
+        [HttpGet]
+        public IActionResult ApplyLeave()
+        {
+            LeaveViewModel model = new LeaveViewModel();
+
+            var activeEmployees = employeeViewModelRepository.GetAllActiveEmployees();
+
+            model.EmployeeList = activeEmployees.Select(emp => new SelectListItem
+            {
+                Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
+                Value = emp.EmployeeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            model.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
+            {
+                Text = l.LeaveTypeName,
+                Value = l.LeaveTypeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            model.HandoverEmployeeList = activeEmployees.Select(emp => new SelectListItem
+            {
+                Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
+                Value = emp.EmployeeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ApplyLeave(LeaveViewModel model)
+        {
+            var activeEmployees = employeeViewModelRepository.GetAllActiveEmployees();
+
+            model.EmployeeList = activeEmployees.Select(emp => new SelectListItem
+            {
+                Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
+                Value = emp.EmployeeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            model.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
+            {
+                Text = l.LeaveTypeName,
+                Value = l.LeaveTypeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            model.HandoverEmployeeList = activeEmployees.Select(emp => new SelectListItem
+            {
+                Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
+                Value = emp.EmployeeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
+            if (ModelState.IsValid)
+            {
+                if (model.EmployeeLeave.StartDate.DayOfWeek == DayOfWeek.Saturday || model.EmployeeLeave.StartDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    TempData["ErrorMessage"] = "Start date can not start from weekend.";
+                    return View(model);
+                }
+
+                if (model.EmployeeLeave.EndDate.DayOfWeek == DayOfWeek.Saturday || model.EmployeeLeave.EndDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    TempData["ErrorMessage"] = "End date can not end to weekend.";
+                    return View(model);
+                }
+
+                var holidayList = adminRepository.GetHolidayList();
+                if (holidayList.Count > 0)
+                {
+                    var startDateExistsOnHoliday = holidayList.Exists(m => m.HolidayDate == model.EmployeeLeave.StartDate.Date);
+
+                    if (startDateExistsOnHoliday)
+                    {
+                        TempData["ErrorMessage"] = "Start date can not start from national holidays.";
+                        return View(model);
+                    }
+
+                    var endDateExistsOnHoliday = holidayList.Exists(m => m.HolidayDate == model.EmployeeLeave.EndDate.Date);
+
+                    if (endDateExistsOnHoliday)
+                    {
+                        TempData["ErrorMessage"] = "End date can not end to national holidays.";
+                        return View(model);
+                    }
+                }
+
+
+                if (DateTime.Today.Subtract(model.EmployeeLeave.StartDate).Days > 7)
+                {
+                    TempData["ErrorMessage"] = "You can not apply leave less than 7 days from today.";
+                    return View(model);
+                }
+
+                var employeeLeaves = adminRepository.GetEmployeeLeavesByEmpId(model.EmployeeLeave.EmployeeId).Where(m => m.StartDate >= model.EmployeeLeave.StartDate && m.EndDate <= model.EmployeeLeave.EndDate).OrderBy(o => o.StartDate).ToList();
+
+                if (employeeLeaves.Count > 0)
+                {
+                    var leaveAlreadyExist = employeeLeaves.Exists(m => m.StartDateFirstHalf == model.EmployeeLeave.StartDateFirstHalf || m.EndDateSecondHalf == model.EmployeeLeave.EndDateSecondHalf);
+                    if (leaveAlreadyExist)
+                    {
+                        TempData["ErrorMessage"] = "You have already applied leave for selected dates.";
+                        return View(model);
+                    }
+                }
+
+                var addedLeave = adminRepository.ApplyEmployeeLeave(model.EmployeeLeave);
+                if (addedLeave != null)
+                {
+                    TempData["SuccessMessage"] = "Leave applied successfully";
+                    return RedirectToAction("EmployeeLeaveHistory");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                }
+            }
+
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public IActionResult EmployeeLeaveHistory()
+        {
+            var employeeLeaves = adminRepository.GetEmployeeLeaves().OrderBy(o => o.StartDate);
+
+            List<EmployeeLeaveHistoryViewModel> employeeLeaveHistoryViewModelList = new List<EmployeeLeaveHistoryViewModel>();
+            foreach (var leave in employeeLeaves)
+            {
+                EmployeeLeaveHistoryViewModel employeeLeaveHistoryViewModel = new EmployeeLeaveHistoryViewModel();
+                employeeLeaveHistoryViewModel.EmployeeFullName = leave.Employee.FirstName + (leave.Employee.MiddileName != null ? (" " + leave.Employee.MiddileName + " " + leave.Employee.LastName) : (" " + leave.Employee.LastName));
+                employeeLeaveHistoryViewModel.EmployeeLeave = leave;
+                var handoverEmployee = employeeViewModelRepository.GetEmployeeById(leave.HandoverTo);
+                employeeLeaveHistoryViewModel.HandoverToEmployeeName = handoverEmployee.FirstName + (handoverEmployee.MiddileName != null ? (" " + handoverEmployee.MiddileName + " " + handoverEmployee.LastName) : (" " + handoverEmployee.LastName)); ;
+                employeeLeaveHistoryViewModel.NoOfLeaves = (leave.EndDate.Subtract(leave.StartDate)).TotalDays + 1;
+                if (leave.StartDateFirstHalf || leave.EndDateSecondHalf)
+                {
+                    employeeLeaveHistoryViewModel.NoOfLeaves -= 0.5;
+                }
+                employeeLeaveHistoryViewModelList.Add(employeeLeaveHistoryViewModel);
+            }
+            return View(employeeLeaveHistoryViewModelList);
+        }
+
+        [HttpPost]
+        public JsonResult GetHandoverEmployeeList(string empId)
+        {
+            Guid employeeId = Guid.Parse(empId);
+
+            List<SelectListItem> handOverEmployeeList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employeeId).Select(emp => new SelectListItem
+            {
+                Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
+                Value = emp.EmployeeId.ToString()
+            }).ToList();
+            var result = JsonConvert.SerializeObject(handOverEmployeeList);
+
+            return Json(result);
+        }
+
+        //public JsonResult HolidaysAndWeekendDates()
+        //{
+        //    Guid employeeId = Guid.Parse(empId);
+
+        //    List<SelectListItem> handOverEmployeeList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employeeId).Select(emp => new SelectListItem
+        //    {
+        //        Text = emp.EmailAddress,
+        //        Value = emp.EmployeeId.ToString()
+        //    }).ToList();
+        //    var result = JsonConvert.SerializeObject(handOverEmployeeList);
+
+        //    return Json(result);
+        //}
     }
 }

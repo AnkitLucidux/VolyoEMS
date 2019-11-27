@@ -1,0 +1,54 @@
+﻿@model IEnumerable<EMS.Entities.EmployeeLeaveBalance>
+
+@{
+    ViewData["Title"] = "Employee Leave Balance";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateLeaveBalance">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr> 
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveBalance)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveBalance)
+                </td>
+                <td>
+                    <form asp-action="DeleteLeaveBalance" asp-route-id="@item.LeaveBalanceId" method="post">
+                        <a class="" asp-action="EditLeaveBalance" asp-route-id="@item.LeaveBalanceId"><img src="~/Images/Icons/edit.png" title="Edit" class="icon" /></a>
+                        <button type="submit" class="" onclick="return confirm('Are you sure you want to delete @item.Employee.EmailAddress leave balance ?')"><img src="~/Images/Icons/delete.png" title="Delete" class="icon" /></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

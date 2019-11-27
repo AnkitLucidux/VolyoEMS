@@ -19,7 +19,7 @@ namespace EMS.Web.Controllers
 
         public ActionResult Index()
         {
-            return View(adminRepository.GetHolidayList());
+            return View(adminRepository.GetHolidayList().OrderBy(o => o.HolidayDate));
         }
 
         // GET: Holiday/Create
@@ -34,25 +34,57 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Holiday holidayModel)
         {
-            var checkHoliday = adminRepository.GetHolidayByName(holidayModel.HolidayName);
-
-            if (checkHoliday != null)
+            if (ModelState.IsValid)
             {
-                this.TempData["ErrorMessage"] = "This holiday is already exists!";
-                return View(holidayModel);
-            }
+                if (holidayModel.HolidayDate.Value.DayOfWeek == DayOfWeek.Saturday || holidayModel.HolidayDate.Value.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    ViewBag.WeekendExist = "You can not apply holiday on weekend.";
+                    return View(holidayModel);
+                }
 
-            var addedHoliday = adminRepository.AddUpdateHoliday(holidayModel);
-            if (addedHoliday != null)
-            {
-                this.TempData["SuccessMessage"] = "Holiday added Successfully";
+                var errorCount = 0;
+                var checkHolidayByDate = adminRepository.GetHolidayByDate(holidayModel.HolidayDate);
+                var checkholidayByName = adminRepository.GetHolidayByName(holidayModel.HolidayName);
+
+                if (checkHolidayByDate != null)
+                {
+                    if (checkHolidayByDate.HolidayDate == holidayModel.HolidayDate)
+                    {
+                        errorCount++;
+                        ViewBag.DateExistsError = $"{holidayModel.HolidayDate.Value.ToString("dd-MMM-yyyy")} is already occupied with another holiday!";
+                    }
+                }
+
+                if (checkholidayByName != null)
+                {
+                    if (checkholidayByName.HolidayName == holidayModel.HolidayName)
+                    {
+                        errorCount++;
+                        ViewBag.NameExistsError = $"{holidayModel.HolidayName} is already exists!";
+                    }
+                }
+
+                if (errorCount == 0)
+                {
+                    var addedHoliday = adminRepository.AddUpdateHoliday(holidayModel);
+                    if (addedHoliday != null)
+                    {
+                        this.TempData["SuccessMessage"] = "Holiday added Successfully";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                    }
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
-                TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                this.TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
             }
 
-            return RedirectToAction("Index");
+            return View(holidayModel);
         }
 
         [HttpGet]
@@ -65,24 +97,56 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Holiday model)
         {
-
-            var checkHoliday = adminRepository.GetHolidayByName(model.HolidayName);
-
-            if (checkHoliday != null)
+            if (ModelState.IsValid)
             {
-                if (checkHoliday == null || checkHoliday.HolidayId != model.HolidayId)
+                if (model.HolidayDate.Value.DayOfWeek == DayOfWeek.Saturday || model.HolidayDate.Value.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    this.TempData["ErrorMessage"] = "This holiday is already exists.";
+                    ViewBag.WeekendExist = "You can not apply holiday on weekend.";
                     return View(model);
                 }
-            }
 
-            checkHoliday = adminRepository.GetHolidayById(model.HolidayId);
-            checkHoliday.HolidayName = model.HolidayName;
-            var updatedHoliday = adminRepository.AddUpdateHoliday(checkHoliday);
-            if (updatedHoliday != null)
+                var errorCount = 0;
+                var checkHolidayByDate = adminRepository.GetHolidayByDate(model.HolidayDate);
+                var checkHolidayByName = adminRepository.GetHolidayByName(model.HolidayName);
+                if (checkHolidayByDate != null)
+                {
+                    if (checkHolidayByDate == null || checkHolidayByDate.HolidayId != model.HolidayId)
+                    {
+                        if (checkHolidayByDate.HolidayDate == model.HolidayDate)
+                        {
+                            errorCount++;
+                            ViewBag.DateExistsError = $"{model.HolidayDate.Value.ToString("dd-MMM-yyyy")} is already occupied with another holiday!";
+                        }
+                    }
+                }
+
+                if (checkHolidayByName != null)
+                {
+                    if (checkHolidayByName == null || checkHolidayByName.HolidayId != model.HolidayId)
+                    {
+                        if (checkHolidayByName.HolidayName == model.HolidayName)
+                        {
+                            errorCount++;
+                            ViewBag.NameExistsError = $"{model.HolidayName} is already exists!";
+                        }
+                    }
+                }
+                if (errorCount == 0)
+                {
+                    checkHolidayByName = adminRepository.GetHolidayById(model.HolidayId);
+                    checkHolidayByName.HolidayName = model.HolidayName;
+                    checkHolidayByName.HolidayDate = model.HolidayDate;
+                    var updatedHoliday = adminRepository.AddUpdateHoliday(checkHolidayByName);
+                    if (updatedHoliday != null)
+                    {
+                        TempData["SuccessMessage"] = "Holiday updated Successfully";
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            else
             {
-                this.TempData["SuccessMessage"] = "Holiday updated Successfully";
+                this.TempData["ErrorMessage"] = "This holiday is already exists.";
             }
 
             return View(model);
@@ -90,7 +154,7 @@ namespace EMS.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteLeaveType(int id)
+        public IActionResult DeleteHoliday(int id)
         {
             try
             {

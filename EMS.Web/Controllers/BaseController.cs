@@ -1,30 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EMS.Web.Data;
+using EMS.Web.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace EMS.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected IdentityUser LoginUser;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly ApplicationDbContext context;
+        protected UserViewModel LoginUser = new UserViewModel();
 
-        public BaseController(UserManager<IdentityUser> userManager,ApplicationDbContext context)
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        public BaseController(IHttpContextAccessor httpContextAccessor)
         {
-            this.userManager = userManager;
-            this.context = context;
-            GetLoginUser();
+            //this.userManager = userManager;
+            //this.context = context;
+            //GetLoginUser();
+            this.httpContextAccessor = httpContextAccessor;
+
         }
 
-        public async void GetLoginUser()
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var loginUserId = userManager.GetUserId(HttpContext.User);
-            LoginUser = await userManager.FindByIdAsync(loginUserId);
+
+            var user = httpContextAccessor.HttpContext.User;
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var userName = user.FindFirst(ClaimTypes.Name).Value;
+            var userRole = user.FindFirst(ClaimTypes.Role).Value;
+
+            LoginUser.AspUserId = Guid.Parse(userId);
+            LoginUser.Email = userName;
+            LoginUser.RoleName = userRole;
         }
+
+        //public string LoginUser()
+        //{
+        //    return "";
+        //}
+        //public async void GetLoginUser()
+        //{
+        //    var loginUserId = userManager.GetUserId(HttpContext.User);
+        //    LoginUser = await userManager.FindByIdAsync(loginUserId);
+        //}
     }
 }

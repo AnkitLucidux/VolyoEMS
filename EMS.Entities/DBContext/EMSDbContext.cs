@@ -19,6 +19,8 @@ namespace EMS.Entities.DBContext
         public DbSet<Qualification> Qualifications { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<EmployeeLeaveBalance> EmployeeLeaveBalances { get; set; }
+        public DbSet<EmployeeLeave> EmployeeLeaves { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

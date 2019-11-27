@@ -123,6 +123,11 @@ namespace EMS.Web.Repositories
             return adminService.GetHolidayList();
         }
 
+        public Holiday GetHolidayByDate(DateTime? holidayDate)
+        {
+            return adminService.GetHolidayByDate(holidayDate);
+        }
+
         public Holiday GetHolidayByName(string holidayName)
         {
             return adminService.GetHolidayByName(holidayName);
@@ -141,6 +146,41 @@ namespace EMS.Web.Repositories
         public bool DeleteHoliday(int id)
         {
             return adminService.DeleteHoliday(id);
+        }
+
+        public List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList()
+        {
+            return adminService.GetEmployeeLeaveBalanceList();
+        }
+
+        public EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id)
+        {
+            return adminService.GetEmployeeLeaveBalanceById(id);
+        }
+
+        public EmployeeLeaveBalance AddUpdateEmployeeLeaveBalance(EmployeeLeaveBalance employeeLeaveBalance)
+        {
+            return adminService.AddUpdateEmployeeLeaveBalance(employeeLeaveBalance);
+        }
+
+        public bool DeleteEmployeeLeaveBalance(int id)
+        {
+            return adminService.DeleteEmployeeLeaveBalance(id);
+        }
+
+        public EmployeeLeave ApplyEmployeeLeave(EmployeeLeave employeeLeave)
+        {
+            return adminService.ApplyEmployeeLeave(employeeLeave);
+        }
+
+        public List<EmployeeLeave> GetEmployeeLeavesByEmpId(Guid empId)
+        {
+            return adminService.GetEmployeeLeavesByEmpId(empId);
+        }
+
+        public List<EmployeeLeave> GetEmployeeLeaves()
+        {
+            return adminService.GetEmployeeLeaves();
         }
     }
 }

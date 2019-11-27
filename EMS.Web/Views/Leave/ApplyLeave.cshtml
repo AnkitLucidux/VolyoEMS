@@ -1,0 +1,77 @@
+﻿@model EMS.Web.ViewModels.LeaveViewModel
+
+@{
+    ViewData["Title"] = "Apply Leave";
+}
+<script src="~/js/Leave.js"></script>
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ApplyLeave">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="EmployeeLeave.EmployeeId" class="control-label"></label>
+                <select asp-for="EmployeeLeave.EmployeeId" class="form-control" asp-items="@(new SelectList(Model.EmployeeList,"Value","Text"))" onchange="getHandoverEmployeeList()"></select>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-8">
+                    <label asp-for="EmployeeLeave.StartDate" class="control-label"></label>
+                    <input type="text" asp-for="EmployeeLeave.StartDate" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="EmployeeLeave.StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="EmployeeLeave.StartDateFirstHalf" class="control-label"></label>
+                    <input asp-for="EmployeeLeave.StartDateFirstHalf" class="form-control" title="Check to apply first half day leave" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-8">
+                    <label asp-for="EmployeeLeave.EndDate" class="control-label"></label>
+                    <input type="text" asp-for="EmployeeLeave.EndDate" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="EmployeeLeave.EndDate" class="text-danger"></span>
+                </div>
+                <div class="form-group col-sm-4">
+                    <label asp-for="EmployeeLeave.EndDateSecondHalf" class="control-label"></label>
+                    <input asp-for="EmployeeLeave.EndDateSecondHalf" class="form-control" title="Check to apply second half day leave" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeLeave.LeaveTypeId" class="control-label"></label>
+                <select asp-for="EmployeeLeave.LeaveTypeId" class="form-control" asp-items="@(new SelectList(Model.LeaveTypeList,"Value","Text"))"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeLeave.Reason" class="control-label"></label>
+                <input asp-for="EmployeeLeave.Reason" class="form-control" />
+                <span asp-validation-for="EmployeeLeave.Reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeLeave.HandoverTo" class="control-label"></label>
+                <select asp-for="EmployeeLeave.HandoverTo" class="form-control"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeLeave.HandoverProjectDetail" class="control-label"></label>
+                <textarea asp-for="EmployeeLeave.HandoverProjectDetail" class="form-control"></textarea>
+                <span asp-validation-for="EmployeeLeave.HandoverProjectDetail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Apply" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -76,7 +76,7 @@ nav {
 
 .sidenav {
     height: 100%;
-    width: 250px;
+    width: 275px;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -95,19 +95,26 @@ nav {
             border-bottom: 1px solid #867458;
         }
 
+            .sidenav ul li.active {
+                background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+            }
 
-    .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 23px;
-        color: #b7c0cd;
-        display: block;
-        transition: 0.3s;
-    }
+                .sidenav ul li.active a {
+                    color: #fff;
+                }
 
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
+            .sidenav a, .sidenav ul li ul a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 23px;
+                color: #b7c0cd;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidenav a:hover {
+                    color: #f1f1f1;
+                }
 
     .sidenav .closebtn {
         position: absolute;
@@ -148,4 +155,21 @@ button {
 
 h1 {
     text-align: center;
+}
+
+.caret {
+    display: inline-block;
+    margin-top: 5px;
+    width: 10px;
+    height: 10px;
+    margin-left: 12px;
+    vertical-align: middle;
+    border-top: 4px dashed;
+    border-top: 4px solid;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+
+.clear {
+    clear: both;
 }

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<EMS.Web.ViewModels.EmployeeLeaveHistoryViewModel>
+
+@{
+    ViewData["Title"] = "Employee Leave History";
+}
+
+<h1>@ViewData["Title"]</h1>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Employee")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.LeaveType.LeaveTypeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.StartDateFirstHalf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.EndDateSecondHalf)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoOfLeaves)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.Reason)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HandoverToEmployeeName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeLeave.HandoverProjectDetail)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeFullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeLeave.LeaveType.LeaveTypeName)
+                </td>
+                <td>
+                    @item.EmployeeLeave.StartDate.ToString("dd-MMM-yyyy")
+                </td>
+                <td>
+                    @if (item.EmployeeLeave.StartDateFirstHalf)
+                    {
+                        @Html.DisplayName("On Half Day Leave")
+                    }
+                    else
+                    {
+                        @Html.DisplayName("-")
+                    }
+                </td>
+                <td>
+                    @item.EmployeeLeave.EndDate.ToString("dd-MMM-yyyy")
+                    @*@Html.DispllayFor(modelItem => item.EndDate)*@
+                </td>
+                <td>
+                    @if (item.EmployeeLeave.EndDateSecondHalf)
+                    {
+                        @Html.DisplayName("On Half Day Leave")
+                    }
+                    else
+                    {
+                        @Html.DisplayName("-")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(model => item.NoOfLeaves)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeLeave.Reason)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HandoverToEmployeeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeLeave.HandoverProjectDetail)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

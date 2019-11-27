@@ -1,0 +1,46 @@
+﻿@model EMS.Web.ViewModels.EmployeeLeaveBalanceViewModel
+
+@{
+    ViewData["Title"] = "Create Leave Balance";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateLeaveBalance">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="EmployeeLeaveBalance.Employee.EmailAddress" class="control-label"></label>
+                <select asp-for="EmployeeLeaveBalance.EmployeeId" class="form-control" asp-items="@(new SelectList(Model.EmployeeList,"EmployeeId","EmailAddress"))"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeLeaveBalance.LeaveBalance" class="control-label"></label>
+                <input asp-for="EmployeeLeaveBalance.LeaveBalance" class="form-control" />
+                <span asp-validation-for="EmployeeLeaveBalance.LeaveBalance" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="LeaveBalances">Back to List</a>
+</div>
+

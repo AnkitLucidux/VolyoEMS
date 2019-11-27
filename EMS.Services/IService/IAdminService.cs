@@ -32,9 +32,19 @@ namespace EMS.Services.IService
         bool DeleteLeaveType(int id);
 
         List<Holiday> GetHolidayList();
+        Holiday GetHolidayByDate(DateTime? holidayDate);
         Holiday GetHolidayByName(string holidayName);
         Holiday AddUpdateHoliday(Holiday holiday);
         Holiday GetHolidayById(int id);
         bool DeleteHoliday(int id);
+
+        List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList();
+        EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id);
+        EmployeeLeaveBalance AddUpdateEmployeeLeaveBalance(EmployeeLeaveBalance employeeLeaveBalance);
+        bool DeleteEmployeeLeaveBalance(int id);
+
+        EmployeeLeave ApplyEmployeeLeave(EmployeeLeave employeeLeave);
+        List<EmployeeLeave> GetEmployeeLeavesByEmpId(Guid empId);
+        List<EmployeeLeave> GetEmployeeLeaves();
     }
 }
