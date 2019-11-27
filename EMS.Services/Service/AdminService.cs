@@ -263,7 +263,7 @@ namespace EMS.Services.Service
         //Employee Leave Balance
         public List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList()
         {
-            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).ToList();
+            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).Include(leaveType=>leaveType.LeaveType).ToList();
         }
 
         public EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id)

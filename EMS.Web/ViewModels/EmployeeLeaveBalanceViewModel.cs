@@ -1,4 +1,5 @@
 ﻿using EMS.Entities;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +16,9 @@ namespace EMS.Web.ViewModels
 
         [DisplayName("Employees")]
         public List<Employee> EmployeeList { get; set; }
+
+        [DisplayName("Leave Type")]
+        public List<SelectListItem> LeaveTypeList { get; set; }
 
         public EmployeeLeaveBalance EmployeeLeaveBalance { get; set; }
     }

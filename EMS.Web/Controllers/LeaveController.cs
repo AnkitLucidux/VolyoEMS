@@ -140,6 +140,13 @@ namespace EMS.Web.Controllers
                 TempData["ErrorMessage"] = "All employee leave balance is occupied, You can update existing employee leave balance or delete to create new.";
                 return RedirectToAction("LeaveBalances");
             }
+
+            employeeLeaveBalanceViewModel.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
+            {
+                Text = l.LeaveTypeName,
+                Value = l.LeaveTypeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
+
             return View(employeeLeaveBalanceViewModel);
         }
 
@@ -175,7 +182,11 @@ namespace EMS.Web.Controllers
                 model.EmployeeLeaveBalance = adminRepository.GetEmployeeLeaveBalanceById(id);
             }
             //model.EmployeeList = employeeViewModelRepository.GetAllActiveEmployees();
-
+            model.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
+            {
+                Text = l.LeaveTypeName,
+                Value = l.LeaveTypeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
             return View(model);
         }
 
@@ -207,7 +218,11 @@ namespace EMS.Web.Controllers
                 TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
             }
 
-            //model.EmployeeList = employeeViewModelRepository.GetAllActiveEmployees();
+            model.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
+            {
+                Text = l.LeaveTypeName,
+                Value = l.LeaveTypeId.ToString()
+            }).OrderBy(o => o.Value).ToList();
 
             return View(model);
         }

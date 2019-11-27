@@ -14,6 +14,7 @@ namespace EMS.Entities
 
         public Guid EmployeeId { get; set; }
 
+        [DisplayName("Leave Type")]
         public int LeaveTypeId { get; set; }
 
         [Required(ErrorMessage = "Leave balance is required")]

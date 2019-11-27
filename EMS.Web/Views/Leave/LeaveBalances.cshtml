@@ -22,9 +22,12 @@
 </p>
 <table class="table">
     <thead>
-        <tr> 
+        <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveTypeId)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LeaveBalance)
@@ -38,6 +41,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Employee.EmailAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.LeaveTypeName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LeaveBalance)
