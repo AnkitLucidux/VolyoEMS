@@ -39,6 +39,7 @@ namespace EMS.Services.IService
         bool DeleteHoliday(int id);
 
         List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList();
+        EmployeeLeaveBalance GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(Guid empId, int leaveTypeId);
         EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id);
         EmployeeLeaveBalance AddUpdateEmployeeLeaveBalance(EmployeeLeaveBalance employeeLeaveBalance);
         bool DeleteEmployeeLeaveBalance(int id);

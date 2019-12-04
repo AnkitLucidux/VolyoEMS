@@ -153,6 +153,11 @@ namespace EMS.Web.Repositories
             return adminService.GetEmployeeLeaveBalanceList();
         }
 
+        public EmployeeLeaveBalance GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(Guid empId, int leaveTypeId)
+        {
+            return adminService.GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(empId,leaveTypeId);
+        }
+
         public EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id)
         {
             return adminService.GetEmployeeLeaveBalanceById(id);

@@ -40,7 +40,7 @@ namespace EMS.Entities
         [StringLength(20, ErrorMessage = "The field {0} must be a maximum length of '20'.")]
         public string MobileNumber { get; set; }
 
-        public bool EmailConfirmed { get; set; }
+        public string ImagePath { get; set; }
 
         public DateTime LastLogin { get; set; }
 

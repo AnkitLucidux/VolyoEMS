@@ -1,7 +1,5 @@
 ﻿using EMS.Entities.DBContext;
-using EMS.Services.IService;
-using EMS.Services.Service;
-using EMS.Web.Controllers;
+//using EMS.Web.Controllers;
 using EMS.Web.Data;
 using EMS.Web.Data.Migrations;
 using EMS.Web.Repositories;
@@ -9,7 +7,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -89,9 +86,16 @@ namespace EMS.Web
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: "areas",
+                   template: "{area=Admin}/{controller=Dashboard}/{action=Index}/{id?}");
+
+                //Default Route
+                //routes.MapRoute(
+                //    name: "default",
+                //    template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //replacement of update-database command to update database as per migration file
             var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             var applicationDbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var emsDbContext = serviceScope.ServiceProvider.GetRequiredService<EMSDbContext>();

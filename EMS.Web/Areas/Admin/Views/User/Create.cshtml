@@ -1,0 +1,99 @@
+﻿@model EMS.Web.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "Register User";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="ProfileImage" class="control-label"></label>
+                <div class="custom-file">
+                    <input asp-for="ProfileImage" class="form-control custom-file-input" />
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.FirstName" class="control-label"></label>
+                <input asp-for="User.FirstName" class="form-control" />
+                <span asp-validation-for="User.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.MiddileName" class="control-label"></label>
+                <input asp-for="User.MiddileName" class="form-control" />
+                <span asp-validation-for="User.MiddileName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.LastName" class="control-label"></label>
+                <input asp-for="User.LastName" class="form-control" />
+                <span asp-validation-for="User.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.MobileNumber" class="control-label"></label>
+                <input asp-for="User.MobileNumber" class="form-control" />
+                <span asp-validation-for="User.MobileNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="User.Email" class="control-label"></label>
+                <input asp-for="User.Email" class="form-control" />
+                <span asp-validation-for="User.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RoleId" class="control-label"></label>
+                <div class="">
+                    <select asp-for="RoleId" asp-items="@Model.Roles" class="form-control">
+                        <option>--Select role--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".custom-file-input").on('change', function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next(".custom-file-label").text("Choose File...");
+                if (fileName != "") {
+                    $(this).next(".custom-file-label").text(fileName);
+                }
+            });
+        });
+    </script>
+}

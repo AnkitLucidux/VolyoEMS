@@ -1,0 +1,49 @@
+﻿@model IEnumerable<EMS.Web.ViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "Role Management";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
+
+<div class="validation-message">
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <p class="alert-danger">@TempData["ErrorMessage"]</p>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <p class="alert-success">@TempData["SuccessMessage"]</p>
+    }
+</div>
+
+<table class="datatable table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Role Name
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => role.RoleName)
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@role.RoleId" method="post">
+                        <a asp-action="Edit" asp-route-id="@role.RoleId"><img src="~/Images/Icons/edit.png" title="Edit" class="icon" /></a>
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete Role : @role.RoleName ?')"><img src="~/Images/Icons/delete.png" title="Delete" class="icon" /></button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

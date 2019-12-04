@@ -41,14 +41,11 @@ namespace EMS.Web.Controllers
                 var userRole = await roleManager.FindByNameAsync(userRoleName[0]);
 
                 UserViewModel model = new UserViewModel();
-                model.UserId = user.UserId;
-                model.AspUserId = user.AspUserId;
+                model.User = new User();
                 model.UserName = aspUser.UserName;
-                model.Email = aspUser.Email;
                 model.FullName = user.MiddileName != null ? user.FirstName + " " + user.MiddileName + " " + user.LastName : user.FirstName + " " + user.LastName;
                 model.RoleName = userRole.Name;
-                model.IsActive = user.IsActive;
-                model.IsDeleted = user.IsDeleted;
+                model.User = user;
                 userList.Add(model);
             }
             return View(userList);
@@ -101,55 +98,74 @@ namespace EMS.Web.Controllers
                 Value = r.Id
             }).ToList();
 
-            if (ModelState.IsValid)
+            IdentityUser _user = new IdentityUser();
+            try
             {
-                IdentityUser user = new IdentityUser
+                if (ModelState.IsValid)
                 {
-                    UserName = model.Email,
-                    Email = model.Email
-                };
-
-                var _user = await userManager.FindByEmailAsync(user.Email);
-                if (_user == null)
-                {
-                    IdentityResult createUser = await userManager.CreateAsync(user, model.Password);
-                    if (createUser.Succeeded)
+                    IdentityUser user = new IdentityUser
                     {
-                        IdentityRole role = await roleManager.FindByIdAsync(model.RoleId);
-                        if (role != null)
+                        UserName = model.User.Email,
+                        Email = model.User.Email
+                    };
+
+                    _user = await userManager.FindByEmailAsync(user.Email);
+                    if (_user == null)
+                    {
+                        IdentityResult createUser = await userManager.CreateAsync(user, model.Password);
+                        if (createUser.Succeeded)
                         {
-                            //here we tie the new user to the role
-                            await userManager.AddToRoleAsync(user, role.Name);
-
-                            User addUser = new User();
-                            addUser.AspUserId = new Guid(user.Id);
-                            addUser.FirstName = model.FirstName;
-                            addUser.MiddileName = model.MiddileName;
-                            addUser.LastName = model.LastName;
-                            addUser.Email = model.Email;
-                            addUser.PhoneNumber = model.PhoneNumber;
-                            addUser.MobileNumber = model.MobileNumber;
-
-                            //addUser.CreatedBy = 0; // There must be login user id
-
-                            var result = accountViewModelRepository.AddUpdateUser(addUser);
-                            if (result != null)
+                            IdentityRole role = await roleManager.FindByIdAsync(model.RoleId);
+                            if (role != null)
                             {
-                                TempData["SuccessMessage"] = "User created successfully";
+                                //here we tie the new user to the role
+                                await userManager.AddToRoleAsync(user, role.Name);
+
+                                User addUser = new User();
+                                addUser = model.User;
+                                addUser.AspUserId = new Guid(user.Id);
+                               
+                                //addUser.CreatedBy = 0; // There must be login user id
+
+                                var result = accountViewModelRepository.AddUpdateUser(addUser);
+                                if (result != null)
+                                {
+                                    TempData["SuccessMessage"] = "User created successfully";
+                                }
+                                else
+                                {
+                                    TempData["ErrorMessage"] = "Something went wrong while registering user!";
+                                }
                             }
                             else
                             {
-                                TempData["ErrorMessage"] = "Something went wrong while registering user!";
+                                TempData["ErrorMessage"] = "Selected role not found!";
                             }
                         }
                         else
                         {
-                            TempData["ErrorMessage"] = "Selected role not found!";
+                            TempData["ErrorMessage"] = "Something went wrong while registering user!";
                         }
                     }
-                    else
+                }
+            }
+            catch (Exception ex)
+            {
+                //Roll back created user if any error occours.
+                var userId = new Guid(_user.Id);
+                var user = accountViewModelRepository.GetUserById(userId);
+                var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
+                var userRoleName = await userManager.GetRolesAsync(aspUser);
+
+                await userManager.RemoveFromRoleAsync(aspUser, userRoleName[0]);
+                IdentityResult deletedAspUser = await userManager.DeleteAsync(aspUser);
+
+                if (deletedAspUser.Succeeded)
+                {
+                    var result = accountViewModelRepository.DeleteUserById(user.UserId);
+                    if (result)
                     {
-                        TempData["ErrorMessage"] = "Something went wrong while registering user!";
+                        TempData["SuccessMessage"] = "Error occurred, rolling back user.";
                     }
                 }
             }
@@ -160,26 +176,16 @@ namespace EMS.Web.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             UserViewModel model = new UserViewModel();
+            model.User = new User();
 
             var user = accountViewModelRepository.GetUserById(new Guid(id));
             var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
             var userRoleName = await userManager.GetRolesAsync(aspUser);
             var userRole = await roleManager.FindByNameAsync(userRoleName[0]);
 
-            model.UserId = user.UserId;
-            model.AspUserId = user.AspUserId;
+            model.User = user;
             model.UserName = aspUser.UserName;
-            model.Email = aspUser.Email;
-            model.FirstName = user.FirstName;
-            model.MiddileName = user.MiddileName;
-            model.LastName = user.LastName;
-            model.PhoneNumber = user.PhoneNumber;
-            model.MobileNumber = user.MobileNumber;
-            model.CreatedDate = user.CreatedDate;
-            model.ModifiedDate = user.ModifiedDate;
-            model.CreatedBy = user.CreatedBy;
-            model.ModifiedBy = user.ModifiedBy;
-            model.LastLogin = user.LastLogin;
+            model.User.Email = aspUser.Email;
             model.RoleId = userRole.Id;
             model.RoleName = userRole.Name;
             model.Roles = roleManager.Roles.Select(r => new SelectListItem
@@ -202,13 +208,13 @@ namespace EMS.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = accountViewModelRepository.GetUserById(model.UserId);
+                var user = accountViewModelRepository.GetUserById(model.User.UserId);
                 var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
                 var userRoleName = await userManager.GetRolesAsync(aspUser);
                 var userRole = await roleManager.FindByNameAsync(userRoleName[0]);
 
-                aspUser.Email = model.Email;
-                aspUser.UserName = model.Email;
+                aspUser.Email = model.User.Email;
+                aspUser.UserName = model.User.Email;
 
                 IdentityResult updatedAspUser = await userManager.UpdateAsync(aspUser);
                 if (updatedAspUser.Succeeded && user != null)
@@ -219,14 +225,15 @@ namespace EMS.Web.Controllers
                         await userManager.RemoveFromRoleAsync(aspUser, userRole.Name);
                         await userManager.AddToRoleAsync(aspUser, role.Name);
 
-                        user.UserId = model.UserId;
-                        user.AspUserId = model.AspUserId;
-                        user.Email = model.Email;
-                        user.FirstName = model.FirstName;
-                        user.MiddileName = model.MiddileName;
-                        user.LastName = model.LastName;
-                        user.PhoneNumber = model.PhoneNumber;
-                        user.MobileNumber = model.MobileNumber;
+                        //user = model.User;
+                        user.UserId = model.User.UserId;
+                        user.AspUserId = model.User.AspUserId;
+                        user.Email = model.User.Email;
+                        user.FirstName = model.User.FirstName;
+                        user.MiddileName = model.User.MiddileName;
+                        user.LastName = model.User.LastName;
+                        user.PhoneNumber = model.User.PhoneNumber;
+                        user.MobileNumber = model.User.MobileNumber;
 
                         var result = accountViewModelRepository.AddUpdateUser(user);
                         if (result != null)
@@ -355,7 +362,7 @@ namespace EMS.Web.Controllers
             }
             catch
             {
-                this.TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
+                TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
             }
             return RedirectToAction("Index");
         }

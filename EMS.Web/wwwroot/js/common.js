@@ -15,7 +15,12 @@
     $(".datepicker").datepicker({
         dateFormat: "d-M-yy",
         changeMonth: true,
-        changeYear: true,
+        changeYear: true
+    });
+
+    $('.datatable').DataTable({
+        "dom": 'Bfrtlip',
+        "pagingType": "full_numbers"
     });
 
     $("#HolidayDate").datepicker({

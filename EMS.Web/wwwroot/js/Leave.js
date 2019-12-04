@@ -4,7 +4,7 @@
         changeMonth: true,
         changeYear: true,
         minDate: -7,
-        //beforeShowDay: holidaysAndWeekendDates(),
+        beforeShowDay: excludeHolidaysAndWeekendDates,
         onSelect: function (selected) {
             $(this).change();
             var StartDatedt = new Date($("#EmployeeLeave_StartDate").val());
@@ -18,8 +18,7 @@
         changeMonth: true,
         changeYear: true,
         minDate: -7,
-        //beforeShowDay: $.datepicker.noWeekends,
-        //beforeShowDay: holidaysAndWeekendDates(),
+        beforeShowDay: excludeHolidaysAndWeekendDates,
         onSelect: function (selected) {
             $(this).change();
             var EndDatedt = new Date($("#EmployeeLeave_EndDate").val());
@@ -28,7 +27,10 @@
         }
     });
 
-    getHandoverEmployeeList();
+    var empId = $("#EmployeeLeave_EmployeeId").val();
+    if (empId != null) {
+        getHandoverEmployeeList();
+    }
 });
 
 
@@ -36,7 +38,7 @@ function getHandoverEmployeeList() {
     var empId = $("#EmployeeLeave_EmployeeId").val();
     $.ajax
         ({
-            url: '/Leave/GetHandoverEmployeeList',
+            url: '/Admin/Leave/GetHandoverEmployeeList',
             type: 'POST',
             data: { empId: empId },
 
@@ -52,21 +54,51 @@ function getHandoverEmployeeList() {
         });
 }
 
-function holidaysAndWeekendDates() {
-    debugger;
-    var data = $.datepicker.noWeekends;
-    return data;
-    //debugger;
+function excludeHolidaysAndWeekendDates(date) {
+    //console.log(date);
+    //var holidayList = [];
+
     //$.ajax
     //    ({
-    //        url: '/Leave/HolidaysAndWeekendDates',
+    //        url: '/Leave/GetHolidayList',
     //        type: 'GET',
     //        success: function (result) {
-    //            console.log(result);
+    //            var data = $.parseJSON(result);
+    //            holidayList = data;
+    //            for (i = 0; i < data.length; i++) {
+    //                //console.log(data[i]);
+    //                holidayList.push(data[i]);
+    //            }
+    //            //console.log(date);
+    //            //var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+    //            ////console.log(d + '-' + (m + 1) + '-' + y);
+    //            //for (i = 0; i < data.length; i++) {
+    //            //    //console.log($.inArray(d + '-' + (m + 1) + '-' + y, data));
+    //            //    if ($.inArray(d + '-' + (m + 1) + '-' + y, data) != -1 || new Date() > date) {
+    //            //        //console.log('bad:  ' + (m+1) + '-' + d + '-' + y + ' / ' + disabledDays[i]);
+    //            //        //console.log("In array");
+    //            //        return [false];
+    //            //    }
+    //            //}
     //        },
     //        error: function () {
     //            alert("Something went wrong..")
     //        },
     //    });
+
+    //setTimeout(function () {
+    //    console.log(holidayList);
+    //}, 2000);
+
+    var day = date.getDay();
+    var month = date.getMonth();
+    var year = date.getFullYear();
+    var currDate = date.getDate();
+    if (day == 0 || day == 6) {
+        return [false]
+    }
+    else {
+        return [true]
+    }
 }
 

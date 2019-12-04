@@ -35,8 +35,8 @@ namespace EMS.Web.Controllers
             var userName = user.FindFirst(ClaimTypes.Name).Value;
             var userRole = user.FindFirst(ClaimTypes.Role).Value;
 
-            LoginUser.AspUserId = Guid.Parse(userId);
-            LoginUser.Email = userName;
+            LoginUser.User.AspUserId = Guid.Parse(userId);
+            LoginUser.User.Email = userName;
             LoginUser.RoleName = userRole;
         }
 

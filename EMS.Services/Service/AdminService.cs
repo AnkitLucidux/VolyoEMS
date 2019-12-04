@@ -263,12 +263,17 @@ namespace EMS.Services.Service
         //Employee Leave Balance
         public List<EmployeeLeaveBalance> GetEmployeeLeaveBalanceList()
         {
-            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).Include(leaveType=>leaveType.LeaveType).ToList();
+            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).Include(leaveType => leaveType.LeaveType).ToList();
         }
 
         public EmployeeLeaveBalance GetEmployeeLeaveBalanceById(int id)
         {
             return context.EmployeeLeaveBalances.Include(employee => employee.Employee).FirstOrDefault(x => x.LeaveBalanceId == id);
+        }
+
+        public EmployeeLeaveBalance GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(Guid empId, int leaveTypeId)
+        {
+            return context.EmployeeLeaveBalances.Include(employee => employee.Employee).FirstOrDefault(x => x.EmployeeId == empId && x.LeaveTypeId == leaveTypeId);
         }
 
         public EmployeeLeaveBalance AddUpdateEmployeeLeaveBalance(EmployeeLeaveBalance employeeLeaveBalance)

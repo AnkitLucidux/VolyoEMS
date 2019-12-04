@@ -86,43 +86,47 @@ nav {
     transition: 0.5s;
 }
 
-    .sidenav ul {
-        margin: 0;
-        padding: 0;
+.sidebar-menu, .sidebar-submenu {
+    margin: 0;
+    padding: 0;
+}
+
+    .sidebar-menu li {
+        border-bottom: 1px solid #867458;
     }
 
-        .sidenav ul li {
-            border-bottom: 1px solid #867458;
+        .sidebar-menu li.active, .sidebar-menu li ul li.active {
+            background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%) !important;
         }
 
-            .sidenav ul li.active {
-                background: linear-gradient(to right, #ff9b44 0%, #fc6075 100%);
+            .sidebar-menu li.active a {
+                color: #fff;
             }
 
-                .sidenav ul li.active a {
-                    color: #fff;
-                }
+        .sidebar-menu li .sidebar-submenu li {
+            background: #303c43 !important;
+        }
 
-            .sidenav a, .sidenav ul li ul a {
-                padding: 8px 8px 8px 32px;
-                text-decoration: none;
-                font-size: 23px;
-                color: #b7c0cd;
-                display: block;
-                transition: 0.3s;
-            }
-
-                .sidenav a:hover {
-                    color: #f1f1f1;
-                }
-
-    .sidenav .closebtn {
-        position: absolute;
-        top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
+    .sidebar-menu a, .sidebar-menu ul li ul a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 23px;
+        color: #b7c0cd;
+        display: block;
+        transition: 0.3s;
     }
+
+        .sidebar-menu a:hover {
+            color: #f1f1f1;
+        }
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
 
 #main {
     transition: margin-left .5s;
@@ -173,3 +177,10 @@ h1 {
 .clear {
     clear: both;
 }
+
+.alert-danger, .alert-success {
+    padding: 5px;
+    border-radius: 3px;
+    margin: 0px 0px 20px 10px;
+}
+

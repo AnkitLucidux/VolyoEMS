@@ -181,7 +181,6 @@ namespace EMS.Web.Controllers
                 model = new EmployeeLeaveBalanceViewModel();
                 model.EmployeeLeaveBalance = adminRepository.GetEmployeeLeaveBalanceById(id);
             }
-            //model.EmployeeList = employeeViewModelRepository.GetAllActiveEmployees();
             model.LeaveTypeList = adminRepository.GetLeaveTypeList().Select(l => new SelectListItem
             {
                 Text = l.LeaveTypeName,
@@ -282,6 +281,7 @@ namespace EMS.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult ApplyLeave(LeaveViewModel model)
         {
+
             var activeEmployees = employeeViewModelRepository.GetAllActiveEmployees();
 
             model.EmployeeList = activeEmployees.Select(emp => new SelectListItem
@@ -336,7 +336,6 @@ namespace EMS.Web.Controllers
                     }
                 }
 
-
                 if (DateTime.Today.Subtract(model.EmployeeLeave.StartDate).Days > 7)
                 {
                     TempData["ErrorMessage"] = "You can not apply leave less than 7 days from today.";
@@ -355,9 +354,85 @@ namespace EMS.Web.Controllers
                     }
                 }
 
+                var selectedLeaveType = adminRepository.GetLeaveTypeById(model.EmployeeLeave.LeaveTypeId);
+
+                var selectedEmployeeLeaveBalance = new EmployeeLeaveBalance();
+                var noOfLeaves = 0.0;
+                if (selectedLeaveType.LeaveTypeName.ToUpper() != "LWP")
+                {
+                    selectedEmployeeLeaveBalance = adminRepository.GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(model.EmployeeLeave.EmployeeId, model.EmployeeLeave.LeaveTypeId);
+                    if (selectedEmployeeLeaveBalance == null)
+                    {
+                        TempData["ErrorMessage"] = $"You dont't have any {model.EmployeeLeave.LeaveType.LeaveTypeName}.";
+                        return View(model);
+                    }
+                    else
+                    {
+                        noOfLeaves = (model.EmployeeLeave.EndDate.Subtract(model.EmployeeLeave.StartDate)).TotalDays;//2
+
+                        if (model.EmployeeLeave.StartDateFirstHalf && !model.EmployeeLeave.EndDateSecondHalf)
+                        {
+                            noOfLeaves += 0.5;
+                        }
+                        else if (!model.EmployeeLeave.StartDateFirstHalf && model.EmployeeLeave.EndDateSecondHalf)
+                        {
+                            noOfLeaves += 0.5;
+                        }
+
+                        if (model.EmployeeLeave.StartDate == model.EmployeeLeave.EndDate)
+                        {
+                            if ((model.EmployeeLeave.StartDateFirstHalf && model.EmployeeLeave.EndDateSecondHalf) || (!model.EmployeeLeave.StartDateFirstHalf && !model.EmployeeLeave.EndDateSecondHalf))
+                            {
+                                noOfLeaves += 1;
+                            }
+                        }
+                        else
+                        {
+                            if (!model.EmployeeLeave.StartDateFirstHalf && !model.EmployeeLeave.EndDateSecondHalf)
+                            {
+                                noOfLeaves += 1;
+                            }
+                        }
+
+                        DateTime leaveStartDate = model.EmployeeLeave.StartDate;
+                        DateTime leaveEndDate = model.EmployeeLeave.EndDate;
+
+                        TimeSpan diff = leaveEndDate - leaveStartDate;
+
+                        for (var i = 0; i <= diff.Days; i++)
+                        {
+                            var date = leaveStartDate.AddDays(i);
+                            if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                noOfLeaves -= 1;
+                            }
+
+                            if (holidayList.Exists(m => m.HolidayDate == date))
+                            {
+                                noOfLeaves -= 1;
+                            }
+                        }
+
+                        if (selectedEmployeeLeaveBalance.LeaveBalance < Convert.ToDecimal(noOfLeaves))
+                        {
+                            TempData["ErrorMessage"] = $"You dont't have enough {Convert.ToDecimal(noOfLeaves)} leaves of type {model.EmployeeLeave.LeaveType}.";
+                            return View(model);
+                            //selectedEmployeeLeaveBalance.LeaveBalance -= Convert.ToDecimal(noOfLeaves);
+                            //update
+                        }
+                    }
+                }
+
                 var addedLeave = adminRepository.ApplyEmployeeLeave(model.EmployeeLeave);
                 if (addedLeave != null)
                 {
+                    if (selectedLeaveType.LeaveTypeName.ToUpper() != "LWP")
+                    {
+                        selectedEmployeeLeaveBalance.LeaveBalance -= Convert.ToDecimal(noOfLeaves);
+
+                        //Updating employee leave balance
+                        adminRepository.AddUpdateEmployeeLeaveBalance(selectedEmployeeLeaveBalance);
+                    }
                     TempData["SuccessMessage"] = "Leave applied successfully";
                     return RedirectToAction("EmployeeLeaveHistory");
                 }
@@ -365,9 +440,8 @@ namespace EMS.Web.Controllers
                 {
                     TempData["ErrorMessage"] = "Somthing went wrong. Please try again!";
                 }
+
             }
-
-
             return View(model);
         }
 
@@ -384,11 +458,50 @@ namespace EMS.Web.Controllers
                 employeeLeaveHistoryViewModel.EmployeeLeave = leave;
                 var handoverEmployee = employeeViewModelRepository.GetEmployeeById(leave.HandoverTo);
                 employeeLeaveHistoryViewModel.HandoverToEmployeeName = handoverEmployee.FirstName + (handoverEmployee.MiddileName != null ? (" " + handoverEmployee.MiddileName + " " + handoverEmployee.LastName) : (" " + handoverEmployee.LastName)); ;
-                employeeLeaveHistoryViewModel.NoOfLeaves = (leave.EndDate.Subtract(leave.StartDate)).TotalDays + 1;
-                if (leave.StartDateFirstHalf || leave.EndDateSecondHalf)
+                employeeLeaveHistoryViewModel.NoOfLeaves = (leave.EndDate.Subtract(leave.StartDate)).TotalDays;
+                if (leave.StartDateFirstHalf && !leave.EndDateSecondHalf)
                 {
-                    employeeLeaveHistoryViewModel.NoOfLeaves -= 0.5;
+                    employeeLeaveHistoryViewModel.NoOfLeaves += 0.5;
                 }
+                else if (!leave.StartDateFirstHalf && leave.EndDateSecondHalf)
+                {
+                    employeeLeaveHistoryViewModel.NoOfLeaves += 0.5;
+                }
+
+                if (leave.StartDate == leave.EndDate)
+                {
+                    if ((leave.StartDateFirstHalf && leave.EndDateSecondHalf) || (!leave.StartDateFirstHalf && !leave.EndDateSecondHalf))
+                    {
+                        employeeLeaveHistoryViewModel.NoOfLeaves += 1;
+                    }
+                }
+                else
+                {
+                    if (!leave.StartDateFirstHalf && !leave.EndDateSecondHalf)
+                    {
+                        employeeLeaveHistoryViewModel.NoOfLeaves += 1;
+                    }
+                }
+
+                DateTime leaveStartDate = leave.StartDate;
+                DateTime leaveEndDate = leave.EndDate;
+
+                TimeSpan diff = leaveEndDate - leaveStartDate;
+
+                for (var i = 0; i <= diff.Days; i++)
+                {
+                    var date = leaveStartDate.AddDays(i);
+                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        employeeLeaveHistoryViewModel.NoOfLeaves -= 1;
+                    }
+
+                    if (adminRepository.GetHolidayList().Exists(m => m.HolidayDate == date))
+                    {
+                        employeeLeaveHistoryViewModel.NoOfLeaves -= 1;
+                    }
+                }
+
                 employeeLeaveHistoryViewModelList.Add(employeeLeaveHistoryViewModel);
             }
             return View(employeeLeaveHistoryViewModelList);
@@ -409,18 +522,19 @@ namespace EMS.Web.Controllers
             return Json(result);
         }
 
-        //public JsonResult HolidaysAndWeekendDates()
-        //{
-        //    Guid employeeId = Guid.Parse(empId);
+        public JsonResult GetHolidayList()
+        {
+            List<string> holidayStringList = new List<string>();
 
-        //    List<SelectListItem> handOverEmployeeList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employeeId).Select(emp => new SelectListItem
-        //    {
-        //        Text = emp.EmailAddress,
-        //        Value = emp.EmployeeId.ToString()
-        //    }).ToList();
-        //    var result = JsonConvert.SerializeObject(handOverEmployeeList);
+            var holidayList = adminRepository.GetHolidayList();
 
-        //    return Json(result);
-        //}
+            foreach (var item in holidayList)
+            {
+                holidayStringList.Add(item.HolidayDate.Value.ToString("d-M-yyyy"));
+            }
+
+            var result = JsonConvert.SerializeObject(holidayStringList);
+            return Json(result);
+        }
     }
 }

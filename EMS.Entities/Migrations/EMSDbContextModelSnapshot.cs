@@ -264,11 +264,11 @@ namespace EMS.Entities.Migrations
                         .IsRequired()
                         .HasMaxLength(100);
 
-                    b.Property<bool>("EmailConfirmed");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50);
+
+                    b.Property<string>("ImagePath");
 
                     b.Property<bool>("IsActive");
 
