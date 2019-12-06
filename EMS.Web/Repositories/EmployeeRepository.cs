@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace EMS.Web.Repositories
 {
-    public class EmployeeViewModelRepository
+    public class EmployeeRepository
     {
         public IEmployeeService employeeService;
 
-        public EmployeeViewModelRepository(EMSDbContext eMSDbContext)
+        public EmployeeRepository(EMSDbContext eMSDbContext)
         {
             employeeService = new EmployeeService(eMSDbContext);
         }

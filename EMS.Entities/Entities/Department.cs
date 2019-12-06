@@ -15,6 +15,5 @@ namespace EMS.Entities
         [StringLength(20, ErrorMessage = "The field {0} must be a maximum length of '20'.")]
         [DisplayName("Department Name")]
         public string DepartmentName { get; set; }
-
     }
 }

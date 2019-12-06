@@ -20,7 +20,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 mx-auto">
         <form asp-action="ApplyLeave">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -70,6 +70,8 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Apply" class="btn btn-primary" />
+                <a class="btn btn-primary float-right" asp-action="EmployeeLeaveHistory">Leave History</a>
+
             </div>
         </form>
     </div>

@@ -85,6 +85,8 @@ namespace EMS.Entities.Migrations
 
                     b.Property<int>("Gender");
 
+                    b.Property<string>("ImagePath");
+
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsDeleted");

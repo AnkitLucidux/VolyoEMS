@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace EMS.Web.Repositories
 {
-    public class AccountViewModelRepository
+    public class AccountRepository
     {
         public IUserService userService;
 
-        public AccountViewModelRepository(EMSDbContext eMSDbContext)
+        public AccountRepository(EMSDbContext eMSDbContext)
         {
             userService = new UserService(eMSDbContext);
         }

@@ -45,8 +45,8 @@ function openNav() {
         $("#sidebar").removeClass("open");
     }
     else {
-        document.getElementById("sidebar").style.width = "275px";
-        document.getElementById("main").style.marginLeft = "275px";
+        document.getElementById("sidebar").style.width = "350px";
+        document.getElementById("main").style.marginLeft = "350px";
         $("#sidebar").addClass("open");
     }
 }

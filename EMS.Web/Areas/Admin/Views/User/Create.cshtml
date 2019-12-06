@@ -2,6 +2,13 @@
 
 @{
     ViewData["Title"] = "Register User";
+    var profilePicture = "/Images/default_image.jpg";
+    var profilePictureName = "Choose File...";
+    if (!string.IsNullOrEmpty(@Model.User.ImagePath))
+    {
+        profilePicture = "/Images/UserImage/" + Model.User.ImagePath;
+        profilePictureName = Model.User.ImagePath.Split(new string[] { "$$" }, StringSplitOptions.None)[1];
+    }
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -24,12 +31,18 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                <label asp-for="ProfileImage" class="control-label"></label>
+                <div class="profile-img">
+                    <img src="@profilePicture" />
+                    <button type="button" class="close profile-img-close" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
                 <div class="custom-file">
-                    <input asp-for="ProfileImage" class="form-control custom-file-input" />
-                    <label class="custom-file-label">Choose File...</label>
+                    <input asp-for="ProfileImage" class="form-control custom-file-input" accept=".png,.jpg,.jpeg" />
+                    <label class="custom-file-label">@profilePictureName</label>
                 </div>
             </div>
+
             <div class="form-group">
                 <label asp-for="User.FirstName" class="control-label"></label>
                 <input asp-for="User.FirstName" class="form-control" />
@@ -69,8 +82,9 @@
                 <label asp-for="RoleId" class="control-label"></label>
                 <div class="">
                     <select asp-for="RoleId" asp-items="@Model.Roles" class="form-control">
-                        <option>--Select role--</option>
+                        <option value="">--Select role--</option>
                     </select>
+                    <span asp-validation-for="RoleId" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -87,13 +101,38 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
+            if ($(".custom-file-label").text() != "Choose File...") {
+                $(".profile-img-close").css("display", "block");
+            }
+
             $(".custom-file-input").on('change', function () {
-                var fileName = $(this).val().split("\\").pop();
-                $(this).next(".custom-file-label").text("Choose File...");
-                if (fileName != "") {
-                    $(this).next(".custom-file-label").text(fileName);
-                }
+                changeProfileImage($(this));
+            });
+
+            $(".profile-img img").on('click', function () {
+                $(".custom-file-input").trigger("click");
+            });
+
+            $(".profile-img-close").on('click', function () {
+                $(this).prev().attr("src", "/Images/default_image.jpg");
+                $(this).css("display", "none");
+                $(".custom-file-input").val("");
             });
         });
+
+        function changeProfileImage(input) {
+            //var fileName = input.val().split("\\").pop();
+            //input.next(".custom-file-label").text("Choose File...");
+            //if (fileName != "") {
+            //input.next(".custom-file-label").text(fileName);
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $(".profile-img img").attr("src", e.target.result);
+                $(".profile-img-close").css("display", "block");
+            }
+            reader.readAsDataURL(input[0].files[0]);
+            //}
+        }
     </script>
 }

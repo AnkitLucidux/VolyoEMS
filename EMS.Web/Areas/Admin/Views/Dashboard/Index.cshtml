@@ -1,7 +1,121 @@
-﻿
+﻿@model EMS.Web.ViewModels.DashboardViewModel
+
 @{
     ViewData["Title"] = "Index";
 }
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Welcome Admin!</h3>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ul>
+    </div>
+</div>
 
-<h1>Index</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card flex-fill dash-statistics">
+            <div class="card-body">
+                <h5 class="card-title">Statistics</h5>
+                <div class="stats-list">
+                    <div class="stats-info">
+                        <p>Today Leave <strong>@Model.TodayLeavesList.Count <small>/ @Model.TotalEmployeeCount</small></strong></p>
+                        <div class="progress">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width:@Model.TodayLeavePercent%" aria-valuemin="0" aria-valuemax="@Model.TotalEmployeeCount"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-list">
+                    <div class="stats-info">
+                        <p>Upcoming Leaves <strong>@Model.UpcomingLeavesList.Count <small>/ @Model.TotalEmployeeCount</small></strong></p>
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width:@Model.UpcomingLeavePercent%" aria-valuemin="0" aria-valuemax="@Model.TotalEmployeeCount"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h4 class="card-title">Today Leaves <span class="badge bg-inverse-danger ml-2">@Model.TodayLeavesList.Count</span></h4>
+
+                @if (Model.TodayLeavesList != null && Model.TodayLeavesList.Count() > 0)
+                {
+                    @foreach (var leave in Model.TodayLeavesList)
+                    {
+                        var profilePicture = "/Images/user.jpg";
+                        if (!string.IsNullOrEmpty(leave.Employee.ImagePath))
+                        {
+                            profilePicture = "/Images/EmployeeImage/" + leave.Employee.ImagePath;
+                        }
+
+                        <div class="leave-info-box">
+                            <div class="media align-items-center">
+                                <a class="avatar" asp-area="Admin" asp-controller="Employee" asp-action="Details" asp-route-id="@leave.Employee.EmployeeId"><img alt="@leave.Employee.FirstName" src="@profilePicture"></a>
+
+                                <div class="media-body">
+                                    <div class="text-sm my-0">@leave.Employee.FirstName</div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mt-3">
+                                <div class="col-6">
+                                    <h6 class="mb-0">@leave.StartDate.ToShortDateString()</h6>
+                                    <span class="text-sm text-muted">Leave Date</span>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <span class="badge bg-inverse-success">Approved</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <h4 class="card-title">Upcoming Leaves <span class="badge bg-inverse-danger ml-2">@Model.UpcomingLeavesList.Count</span></h4>
+
+                @if (Model.UpcomingLeavesList != null && Model.UpcomingLeavesList.Count() > 0)
+                {
+                    @foreach (var leave in Model.UpcomingLeavesList)
+                    {
+                        var profilePicture = "/Images/user.jpg";
+                        if (!string.IsNullOrEmpty(leave.Employee.ImagePath))
+                        {
+                            profilePicture = "/Images/EmployeeImage/" + leave.Employee.ImagePath;
+                        }
+
+                        <div class="leave-info-box">
+                            <div class="media align-items-center">
+                                <a class="avatar" asp-area="Admin" asp-controller="Employee" asp-action="Details" asp-route-id="@leave.Employee.EmployeeId"><img alt="@leave.Employee.FirstName" src="@profilePicture"></a>
+
+                                <div class="media-body">
+                                    <div class="text-sm my-0">@leave.Employee.FirstName</div>
+                                </div>
+                            </div>
+                            <div class="row align-items-center mt-3">
+                                <div class="col-6">
+                                    <h6 class="mb-0">@leave.StartDate.ToShortDateString() - @leave.EndDate.ToShortDateString()</h6>
+                                    <span class="text-sm text-muted">Leave Start Date - Leave End Date</span>
+                                </div>
+                                <div class="col-6 text-right">
+                                    <span class="badge bg-inverse-danger">Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
 

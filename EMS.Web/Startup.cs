@@ -56,8 +56,8 @@ namespace EMS.Web
 
 
             services.AddDbContext<EMSDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped(typeof(AccountViewModelRepository));
-            services.AddScoped(typeof(EmployeeViewModelRepository));
+            services.AddScoped(typeof(AccountRepository));
+            services.AddScoped(typeof(EmployeeRepository));
             services.AddScoped(typeof(AdminRepository));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }

@@ -122,5 +122,7 @@ namespace EMS.Entities
 
         [ForeignKey("DesignationId")]
         public virtual Designation Designation { get; set; }
+
+        public string ImagePath { get; set; }
     }
 }

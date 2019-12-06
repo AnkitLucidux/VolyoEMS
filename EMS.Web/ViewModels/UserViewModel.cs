@@ -31,10 +31,12 @@ namespace EMS.Web.ViewModels
         public User User { get; set; }
 
         [Display(Name = "Profile Image")]
+        [DataType(DataType.Upload)]
         public IFormFile ProfileImage { get; set; }
 
+        [Required(ErrorMessage = "Role required.")]
         [Display(Name = "Role")]
-        public string RoleId { get; set; }
+        public Guid? RoleId { get; set; }
 
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }

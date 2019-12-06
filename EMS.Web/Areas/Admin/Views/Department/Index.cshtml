@@ -6,9 +6,7 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
+<hr />
 
 <div class="validation-message">
     @if (TempData["ErrorMessage"] != null)
@@ -20,6 +18,10 @@
         <p class="alert-success">@TempData["SuccessMessage"]</p>
     }
 </div>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</p>
 
 <table class="datatable table table-striped table-bordered table-hover">
     <thead>

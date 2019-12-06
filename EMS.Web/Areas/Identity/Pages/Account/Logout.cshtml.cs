@@ -36,7 +36,8 @@ namespace EMS.Web.Areas.Identity.Pages.Account
             }
             else
             {
-                return Page();
+                return RedirectToPage("Login");
+                //return Page();
             }
         }
     }

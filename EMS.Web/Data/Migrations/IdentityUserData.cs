@@ -48,7 +48,7 @@ namespace EMS.Web.Data.Migrations
                         await UserManager.AddToRoleAsync(adminUser, "Admin");
 
                         var _emsContext = serviceProvider.GetRequiredService<EMSDbContext>();
-                        AccountViewModelRepository accountRepository = new AccountViewModelRepository(_emsContext);
+                        AccountRepository accountRepository = new AccountRepository(_emsContext);
 
                         User addUser = new User();
                         addUser.AspUserId = new Guid(adminUser.Id);

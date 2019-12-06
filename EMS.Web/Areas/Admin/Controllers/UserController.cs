@@ -22,14 +22,16 @@ namespace EMS.Web.Areas.Admin.Controllers
 
         public RoleManager<IdentityRole> roleManager { get; }
         public UserManager<IdentityUser> userManager { get; }
-        public AccountViewModelRepository accountViewModelRepository { get; }
+        public AccountRepository accountRepository { get; }
+        string directoryPath = string.Empty;
 
-        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AccountViewModelRepository accountViewModelRepository, HostingEnvironment hostingEnvironment)
+        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AccountRepository accountRepository, HostingEnvironment hostingEnvironment)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
-            this.accountViewModelRepository = accountViewModelRepository;
+            this.accountRepository = accountRepository;
             this.hostingEnvironment = hostingEnvironment;
+            directoryPath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\UserImage");
         }
 
         // GET: User
@@ -37,7 +39,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         {
             List<UserViewModel> userList = new List<UserViewModel>();
             //var aspUsers = userManager.Users;
-            var users = accountViewModelRepository.GetAllUsers();
+            var users = accountRepository.GetAllUsers();
 
             foreach (var user in users)
             {
@@ -60,7 +62,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         //public ActionResult Details(Guid id)
         //{
         //    UserViewModel model = new UserViewModel();
-        //    var user = accountViewModelRepository.GetUserById(id);
+        //    var user = accountRepository.GetUserById(id);
 
         //    model.UserId = user.UserId;
         //    model.AspUserId = user.AspUserId;
@@ -84,6 +86,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         public IActionResult Create()
         {
             UserViewModel model = new UserViewModel();
+            model.User = new User();
             model.Roles = roleManager.Roles.Select(r => new SelectListItem
             {
                 Text = r.Name,
@@ -103,26 +106,25 @@ namespace EMS.Web.Areas.Admin.Controllers
                 Value = r.Id
             }).ToList();
 
-            IdentityUser _user = new IdentityUser();
+            string uniqueFileName = null;
+            IdentityUser user = new IdentityUser();
             try
             {
                 if (ModelState.IsValid)
                 {
-
-
-                    IdentityUser user = new IdentityUser
+                    user = new IdentityUser
                     {
                         UserName = model.User.Email,
                         Email = model.User.Email
                     };
 
-                    _user = await userManager.FindByEmailAsync(user.Email);
-                    if (_user == null)
+                    IdentityUser identityUser = await userManager.FindByEmailAsync(user.Email);
+                    if (identityUser == null)
                     {
                         IdentityResult createUser = await userManager.CreateAsync(user, model.Password);
                         if (createUser.Succeeded)
                         {
-                            IdentityRole role = await roleManager.FindByIdAsync(model.RoleId);
+                            IdentityRole role = await roleManager.FindByIdAsync(model.RoleId.ToString());
                             if (role != null)
                             {
                                 //here we tie the new user to the role
@@ -134,11 +136,8 @@ namespace EMS.Web.Areas.Admin.Controllers
 
                                 //addUser.CreatedBy = 0; // There must be login user id
 
-
-                                string uniqueFileName = null;
                                 if (model.ProfileImage != null)
                                 {
-                                    string directoryPath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\UserImage");
                                     if (!Directory.Exists(directoryPath))
                                     {
                                         Directory.CreateDirectory(directoryPath);
@@ -147,37 +146,42 @@ namespace EMS.Web.Areas.Admin.Controllers
                                     uniqueFileName = addUser.AspUserId + "$$" + model.ProfileImage.FileName;
                                     string filePath = Path.Combine(directoryPath, uniqueFileName);
                                     model.ProfileImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                                    addUser.ImagePath = uniqueFileName;
                                 }
 
-                                addUser.ImagePath = uniqueFileName;
-                                var result = accountViewModelRepository.AddUpdateUser(addUser);
+                                //throw new System.ArgumentException("Parameter cannot be null", "original");
+                                var result = accountRepository.AddUpdateUser(addUser);
                                 if (result != null)
                                 {
                                     TempData["SuccessMessage"] = "User created successfully";
-                                }
-                                else
-                                {
-                                    TempData["ErrorMessage"] = "Something went wrong while registering user!";
+                                    return RedirectToAction("Index");
                                 }
                             }
                             else
                             {
                                 TempData["ErrorMessage"] = "Selected role not found!";
+                                var aspUser = await userManager.FindByIdAsync(user.Id);
+                                await userManager.DeleteAsync(aspUser);
                             }
                         }
                         else
                         {
-                            TempData["ErrorMessage"] = "Something went wrong while registering user!";
+                            foreach (var error in createUser.Errors)
+                            {
+                                TempData["ErrorMessage"] = error.Description;
+                            }
                         }
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = $"User {model.User.Email} is already taken.";
                     }
                 }
             }
             catch (Exception ex)
             {
                 //Roll back created user if any error occours.
-                var userId = new Guid(_user.Id);
-                var user = accountViewModelRepository.GetUserById(userId);
-                var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
+                var aspUser = await userManager.FindByIdAsync(user.Id);
                 var userRoleName = await userManager.GetRolesAsync(aspUser);
 
                 await userManager.RemoveFromRoleAsync(aspUser, userRoleName[0]);
@@ -185,12 +189,16 @@ namespace EMS.Web.Areas.Admin.Controllers
 
                 if (deletedAspUser.Succeeded)
                 {
-                    var result = accountViewModelRepository.DeleteUserById(user.UserId);
-                    if (result)
+                    //Deleting image from server
+                    string deletedFilePath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\UserImage\\" + uniqueFileName);
+                    if (System.IO.File.Exists(deletedFilePath))
                     {
-                        TempData["SuccessMessage"] = "Error occurred, rolling back user.";
+                        System.GC.Collect();
+                        System.GC.WaitForPendingFinalizers();
+                        System.IO.File.Delete(deletedFilePath);
                     }
                 }
+                TempData["ErrorMessage"] = "Something went wrong while registering user!";
             }
             return View(model);
         }
@@ -201,7 +209,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             UserViewModel model = new UserViewModel();
             model.User = new User();
 
-            var user = accountViewModelRepository.GetUserById(new Guid(id));
+            var user = accountRepository.GetUserById(new Guid(id));
             var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
             var userRoleName = await userManager.GetRolesAsync(aspUser);
             var userRole = await roleManager.FindByNameAsync(userRoleName[0]);
@@ -209,7 +217,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             model.User = user;
             model.UserName = aspUser.UserName;
             model.User.Email = aspUser.Email;
-            model.RoleId = userRole.Id;
+            model.RoleId = Guid.Parse(userRole.Id);
             model.RoleName = userRole.Name;
             model.Roles = roleManager.Roles.Select(r => new SelectListItem
             {
@@ -231,7 +239,7 @@ namespace EMS.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = accountViewModelRepository.GetUserById(model.User.UserId);
+                var user = accountRepository.GetUserById(model.User.UserId);
                 var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
                 var userRoleName = await userManager.GetRolesAsync(aspUser);
                 var userRole = await roleManager.FindByNameAsync(userRoleName[0]);
@@ -242,7 +250,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                 IdentityResult updatedAspUser = await userManager.UpdateAsync(aspUser);
                 if (updatedAspUser.Succeeded && user != null)
                 {
-                    IdentityRole role = await roleManager.FindByIdAsync(model.RoleId);
+                    IdentityRole role = await roleManager.FindByIdAsync(model.RoleId.ToString());
                     if (role != null)
                     {
                         await userManager.RemoveFromRoleAsync(aspUser, userRole.Name);
@@ -258,7 +266,32 @@ namespace EMS.Web.Areas.Admin.Controllers
                         user.PhoneNumber = model.User.PhoneNumber;
                         user.MobileNumber = model.User.MobileNumber;
 
-                        var result = accountViewModelRepository.AddUpdateUser(user);
+                        string uniqueFileName = null;
+                        if (model.ProfileImage != null)
+                        {
+                            string deletedFilePath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\UserImage\\" + user.ImagePath);
+                            if (System.IO.File.Exists(deletedFilePath))
+                            {
+                                System.GC.Collect();
+                                System.GC.WaitForPendingFinalizers();
+                                System.IO.File.Delete(deletedFilePath);
+                            }
+
+                            if (!Directory.Exists(directoryPath))
+                            {
+                                Directory.CreateDirectory(directoryPath);
+                            }
+                            uniqueFileName = user.AspUserId + "$$" + model.ProfileImage.FileName;
+                            string filePath = Path.Combine(directoryPath, uniqueFileName);
+                            model.ProfileImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                            user.ImagePath = uniqueFileName;
+                        }
+                        else
+                        {
+                            user.ImagePath = null;
+                        }
+
+                        var result = accountRepository.AddUpdateUser(user);
                         if (result != null)
                         {
                             TempData["SuccessMessage"] = "User updated successfully";
@@ -296,7 +329,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         // GET: Employee/Edit/5
         public async Task<IActionResult> Deactivate(Guid id)
         {
-            var user = accountViewModelRepository.GetUserById(id);
+            var user = accountRepository.GetUserById(id);
             var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
             var userRoleName = await userManager.GetRolesAsync(aspUser);
 
@@ -307,7 +340,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                     user.IsActive = false;
                     user.IsDeleted = true;
 
-                    var result = accountViewModelRepository.AddUpdateUser(user);
+                    var result = accountRepository.AddUpdateUser(user);
                     if (result != null)
                     {
                         TempData["SuccessMessage"] = "Employee deactivated successfully";
@@ -329,13 +362,13 @@ namespace EMS.Web.Areas.Admin.Controllers
         // GET: Employee/Edit/5
         public IActionResult Activate(Guid id)
         {
-            var user = accountViewModelRepository.GetUserById(id);
+            var user = accountRepository.GetUserById(id);
             if (user != null)
             {
                 user.IsActive = true;
                 user.IsDeleted = false;
 
-                var result = accountViewModelRepository.AddUpdateUser(user);
+                var result = accountRepository.AddUpdateUser(user);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Employee activated successfully";
@@ -356,7 +389,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         {
             try
             {
-                var user = accountViewModelRepository.GetUserById(id);
+                var user = accountRepository.GetUserById(id);
                 var aspUser = await userManager.FindByIdAsync(user.AspUserId.ToString());
                 var userRoleName = await userManager.GetRolesAsync(aspUser);
 
@@ -367,7 +400,7 @@ namespace EMS.Web.Areas.Admin.Controllers
 
                     if (deletedAspUser.Succeeded)
                     {
-                        var result = accountViewModelRepository.DeleteUserById(user.UserId);
+                        var result = accountRepository.DeleteUserById(user.UserId);
                         if (result)
                         {
                             TempData["SuccessMessage"] = "Employee deleted Successfully";

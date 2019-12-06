@@ -17,12 +17,12 @@ namespace EMS.Web.Areas.Admin.Controllers
     public class LeaveController : Controller
     {
         private readonly AdminRepository adminRepository;
-        private readonly EmployeeViewModelRepository employeeViewModelRepository;
+        private readonly EmployeeRepository employeeRepository;
 
-        public LeaveController(AdminRepository adminRepository, EmployeeViewModelRepository employeeViewModelRepository)
+        public LeaveController(AdminRepository adminRepository, EmployeeRepository employeeRepository)
         {
             this.adminRepository = adminRepository;
-            this.employeeViewModelRepository = employeeViewModelRepository;
+            this.employeeRepository = employeeRepository;
         }
 
         [HttpGet]
@@ -132,7 +132,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             EmployeeLeaveBalanceViewModel employeeLeaveBalanceViewModel = new EmployeeLeaveBalanceViewModel();
 
             var leaveBalancesEmployee = adminRepository.GetEmployeeLeaveBalanceList();
-            var allActiveEmployee = employeeViewModelRepository.GetAllActiveEmployees();
+            var allActiveEmployee = employeeRepository.GetAllActiveEmployees();
 
             employeeLeaveBalanceViewModel.EmployeeList = allActiveEmployee.Where(m => !leaveBalancesEmployee.Any(s => s.Employee.EmailAddress == m.EmailAddress)).ToList();
             if (employeeLeaveBalanceViewModel.EmployeeList.Count <= 0)
@@ -254,7 +254,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         {
             LeaveViewModel model = new LeaveViewModel();
 
-            var activeEmployees = employeeViewModelRepository.GetAllActiveEmployees();
+            var activeEmployees = employeeRepository.GetAllActiveEmployees();
 
             model.EmployeeList = activeEmployees.Select(emp => new SelectListItem
             {
@@ -282,7 +282,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         public IActionResult ApplyLeave(LeaveViewModel model)
         {
 
-            var activeEmployees = employeeViewModelRepository.GetAllActiveEmployees();
+            var activeEmployees = employeeRepository.GetAllActiveEmployees();
 
             model.EmployeeList = activeEmployees.Select(emp => new SelectListItem
             {
@@ -363,7 +363,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                     selectedEmployeeLeaveBalance = adminRepository.GetEmployeeLeaveBalanceByEmpIdLeaveTypeId(model.EmployeeLeave.EmployeeId, model.EmployeeLeave.LeaveTypeId);
                     if (selectedEmployeeLeaveBalance == null)
                     {
-                        TempData["ErrorMessage"] = $"You dont't have any {model.EmployeeLeave.LeaveType.LeaveTypeName}.";
+                        TempData["ErrorMessage"] = $"You dont't have any {selectedLeaveType.LeaveTypeName}.";
                         return View(model);
                     }
                     else
@@ -456,7 +456,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                 EmployeeLeaveHistoryViewModel employeeLeaveHistoryViewModel = new EmployeeLeaveHistoryViewModel();
                 employeeLeaveHistoryViewModel.EmployeeFullName = leave.Employee.FirstName + (leave.Employee.MiddileName != null ? (" " + leave.Employee.MiddileName + " " + leave.Employee.LastName) : (" " + leave.Employee.LastName));
                 employeeLeaveHistoryViewModel.EmployeeLeave = leave;
-                var handoverEmployee = employeeViewModelRepository.GetEmployeeById(leave.HandoverTo);
+                var handoverEmployee = employeeRepository.GetEmployeeById(leave.HandoverTo);
                 employeeLeaveHistoryViewModel.HandoverToEmployeeName = handoverEmployee.FirstName + (handoverEmployee.MiddileName != null ? (" " + handoverEmployee.MiddileName + " " + handoverEmployee.LastName) : (" " + handoverEmployee.LastName)); ;
                 employeeLeaveHistoryViewModel.NoOfLeaves = (leave.EndDate.Subtract(leave.StartDate)).TotalDays;
                 if (leave.StartDateFirstHalf && !leave.EndDateSecondHalf)
@@ -512,7 +512,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         {
             Guid employeeId = Guid.Parse(empId);
 
-            List<SelectListItem> handOverEmployeeList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employeeId).Select(emp => new SelectListItem
+            List<SelectListItem> handOverEmployeeList = employeeRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employeeId).Select(emp => new SelectListItem
             {
                 Text = emp.FirstName + (emp.MiddileName != null ? (" " + emp.MiddileName + " " + emp.LastName) : (" " + emp.LastName)),
                 Value = emp.EmployeeId.ToString()

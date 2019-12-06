@@ -1,4 +1,5 @@
 ﻿using EMS.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,5 +28,9 @@ namespace EMS.Web.ViewModels
         public List<SelectListItem> ReportToList { get; set; }
 
         public Employee Employee { get; set; }
+
+        [Display(Name = "Profile Image")]
+        [DataType(DataType.Upload)]
+        public IFormFile ProfileImage { get; set; }
     }
 }

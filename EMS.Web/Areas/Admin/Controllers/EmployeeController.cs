@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EMS.Entities;
 using EMS.Web.Repositories;
 using EMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,31 +20,36 @@ namespace EMS.Web.Areas.Admin.Controllers
     {
         private readonly AdminRepository adminRepository;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly HostingEnvironment hostingEnvironment;
 
-        public EmployeeViewModelRepository employeeViewModelRepository { get; }
+        public EmployeeRepository employeeRepository { get; }
+        string directoryPath = string.Empty;
 
-        public EmployeeController(EmployeeViewModelRepository employeeViewModelRepository, AdminRepository adminRepository, UserManager<IdentityUser> userManager)
+        public EmployeeController(EmployeeRepository employeeRepository, AdminRepository adminRepository, UserManager<IdentityUser> userManager, HostingEnvironment hostingEnvironment)
         {
-            this.employeeViewModelRepository = employeeViewModelRepository;
+            this.employeeRepository = employeeRepository;
             this.adminRepository = adminRepository;
             this.userManager = userManager;
+            this.hostingEnvironment = hostingEnvironment;
+            directoryPath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\EmployeeImage");
         }
 
         // GET: Employee
         public IActionResult Index()
         {
-            return View(employeeViewModelRepository.GetAllEmployees().OrderBy(o => o.EmployeeCode));
+            return View(employeeRepository.GetAllEmployees().OrderBy(o => o.EmployeeCode));
         }
 
         // GET: Employee/Create
         public IActionResult Create()
         {
             EmployeeViewModel model = new EmployeeViewModel();
+            model.Employee = new Employee();
             model.QualificationList = adminRepository.GetQualificationList();
             model.DesignationList = adminRepository.GetDesignationList();
             model.DepartmentList = adminRepository.GetDepartmentList();
 
-            model.ReportToList = employeeViewModelRepository.GetAllActiveEmployees().Select(r => new SelectListItem
+            model.ReportToList = employeeRepository.GetAllActiveEmployees().Select(r => new SelectListItem
             {
                 Text = r.FirstName + (r.MiddileName != null ? (" " + r.MiddileName + " " + r.LastName) : (" " + r.LastName)),
                 Value = r.EmployeeId.ToString()
@@ -60,7 +67,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var lastEmpCode = 0;
-                var activeEmployee = employeeViewModelRepository.GetAllEmployees();
+                var activeEmployee = employeeRepository.GetAllEmployees();
                 if (activeEmployee.Count > 0)
                 {
                     lastEmpCode = activeEmployee.OrderByDescending(o => o.CreatedDate).FirstOrDefault().EmployeeCode;
@@ -73,7 +80,19 @@ namespace EMS.Web.Areas.Admin.Controllers
                 }
 
                 //model.Employee.CreatedBy = LoginUser.Id;
-                var result = employeeViewModelRepository.AddUpdateEmployee(model.Employee);
+                if (model.ProfileImage != null)
+                {
+                    if (!Directory.Exists(directoryPath))
+                    {
+                        Directory.CreateDirectory(directoryPath);
+                    }
+
+                    string uniqueFileName = model.Employee.EmployeeCode + "$$" + model.ProfileImage.FileName;
+                    string filePath = Path.Combine(directoryPath, uniqueFileName);
+                    model.ProfileImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                    model.Employee.ImagePath = uniqueFileName;
+                }
+                var result = employeeRepository.AddUpdateEmployee(model.Employee);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Employee added successfully";
@@ -87,7 +106,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             model.QualificationList = adminRepository.GetQualificationList();
             model.DesignationList = adminRepository.GetDesignationList();
             model.DepartmentList = adminRepository.GetDepartmentList();
-            model.ReportToList = employeeViewModelRepository.GetAllActiveEmployees().Select(r => new SelectListItem
+            model.ReportToList = employeeRepository.GetAllActiveEmployees().Select(r => new SelectListItem
             {
                 Text = r.FirstName + (r.MiddileName != null ? (" " + r.MiddileName + " " + r.LastName) : (" " + r.LastName)),
                 Value = r.EmployeeId.ToString()
@@ -100,13 +119,13 @@ namespace EMS.Web.Areas.Admin.Controllers
         public IActionResult Details(Guid id)
         {
             EmployeeViewModel model = new EmployeeViewModel();
-            var employee = employeeViewModelRepository.GetEmployeeById(id);
+            var employee = employeeRepository.GetEmployeeById(id);
             if (employee != null)
             {
                 model.Employee = employee;
                 if (employee.ReportTo != null)
                 {
-                    var reportToEmployee = employeeViewModelRepository.GetEmployeeById(Guid.Parse(employee.ReportTo));
+                    var reportToEmployee = employeeRepository.GetEmployeeById(Guid.Parse(employee.ReportTo));
                     model.Employee.ReportTo = reportToEmployee.FirstName + (reportToEmployee.MiddileName != null ? (" " + reportToEmployee.MiddileName + " " + reportToEmployee.LastName) : (" " + reportToEmployee.LastName));
                 }
             }
@@ -118,7 +137,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         public IActionResult Edit(Guid id)
         {
             EmployeeViewModel model = new EmployeeViewModel();
-            var employee = employeeViewModelRepository.GetEmployeeById(id);
+            var employee = employeeRepository.GetEmployeeById(id);
             if (employee != null)
             {
                 model.Employee = employee;
@@ -126,7 +145,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             model.QualificationList = adminRepository.GetQualificationList();
             model.DesignationList = adminRepository.GetDesignationList();
             model.DepartmentList = adminRepository.GetDepartmentList();
-            model.ReportToList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employee.EmployeeId).Select(r => new SelectListItem
+            model.ReportToList = employeeRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employee.EmployeeId).Select(r => new SelectListItem
             {
                 Text = r.FirstName + (r.MiddileName != null ? (" " + r.MiddileName + " " + r.LastName) : (" " + r.LastName)),
                 Value = r.EmployeeId.ToString()
@@ -144,12 +163,12 @@ namespace EMS.Web.Areas.Admin.Controllers
             ModelState.Remove("Id");
             if (ModelState.IsValid)
             {
-                employee = employeeViewModelRepository.GetEmployeeById(model.Employee.EmployeeId);
+                employee = employeeRepository.GetEmployeeById(model.Employee.EmployeeId);
 
                 if (employee != null)
                 {
                     var errorCount = 0;
-                    var allActiveEmployee = employeeViewModelRepository.GetAllActiveEmployees();
+                    var allActiveEmployee = employeeRepository.GetAllActiveEmployees();
                     var emailFound = allActiveEmployee.Where(m => m.EmailAddress == model.Employee.EmailAddress && m.EmployeeId != model.Employee.EmployeeId);
                     if (emailFound.Count() > 0)
                     {
@@ -196,10 +215,38 @@ namespace EMS.Web.Areas.Admin.Controllers
                         employee.ReportTo = model.Employee.ReportTo;
                         //employee.ModifiedBy = LoginUser.Id;
 
-                        var result = employeeViewModelRepository.AddUpdateEmployee(employee);
+                        if (employee.ImagePath != null)
+                        {
+                            string deletedFilePath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\EmployeeImage\\" + employee.ImagePath);
+                            if (System.IO.File.Exists(deletedFilePath))
+                            {
+                                System.GC.Collect();
+                                System.GC.WaitForPendingFinalizers();
+                                System.IO.File.Delete(deletedFilePath);
+                            }
+                        }
+
+                        if (model.ProfileImage != null)
+                        {
+                            if (!Directory.Exists(directoryPath))
+                            {
+                                Directory.CreateDirectory(directoryPath);
+                            }
+                            string uniqueFileName = employee.EmployeeCode + "$$" + model.ProfileImage.FileName;
+                            string filePath = Path.Combine(directoryPath, uniqueFileName);
+                            model.ProfileImage.CopyTo(new FileStream(filePath, FileMode.Create));
+                            employee.ImagePath = uniqueFileName;
+                        }
+                        else
+                        {
+                            employee.ImagePath = null;
+                        }
+
+                        var result = employeeRepository.AddUpdateEmployee(employee);
                         if (result != null)
                         {
                             TempData["SuccessMessage"] = "Employee updated successfully";
+                            return RedirectToAction("Edit", new { id = employee.EmployeeId });
                         }
                         else
                         {
@@ -211,7 +258,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             model.QualificationList = adminRepository.GetQualificationList();
             model.DesignationList = adminRepository.GetDesignationList();
             model.DepartmentList = adminRepository.GetDepartmentList();
-            model.ReportToList = employeeViewModelRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employee.EmployeeId).Select(r => new SelectListItem
+            model.ReportToList = employeeRepository.GetAllActiveEmployees().Where(m => m.EmployeeId != employee.EmployeeId).Select(r => new SelectListItem
             {
                 Text = r.FirstName + (r.MiddileName != null ? (" " + r.MiddileName + " " + r.LastName) : (" " + r.LastName)),
                 Value = r.EmployeeId.ToString()
@@ -223,13 +270,13 @@ namespace EMS.Web.Areas.Admin.Controllers
         // GET: Employee/Edit/5
         public IActionResult Deactivate(Guid id)
         {
-            var employee = employeeViewModelRepository.GetEmployeeById(id);
+            var employee = employeeRepository.GetEmployeeById(id);
             if (employee != null)
             {
                 employee.IsActive = false;
                 employee.IsDeleted = true;
 
-                var result = employeeViewModelRepository.AddUpdateEmployee(employee);
+                var result = employeeRepository.AddUpdateEmployee(employee);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Employee deactivated successfully";
@@ -246,13 +293,13 @@ namespace EMS.Web.Areas.Admin.Controllers
         // GET: Employee/Edit/5
         public IActionResult Activate(Guid id)
         {
-            var employee = employeeViewModelRepository.GetEmployeeById(id);
+            var employee = employeeRepository.GetEmployeeById(id);
             if (employee != null)
             {
                 employee.IsActive = true;
                 employee.IsDeleted = false;
 
-                var result = employeeViewModelRepository.AddUpdateEmployee(employee);
+                var result = employeeRepository.AddUpdateEmployee(employee);
                 if (result != null)
                 {
                     TempData["SuccessMessage"] = "Employee activated successfully";
@@ -273,7 +320,7 @@ namespace EMS.Web.Areas.Admin.Controllers
         {
             try
             {
-                var result = employeeViewModelRepository.DeleteEmployeeById(id);
+                var result = employeeRepository.DeleteEmployeeById(id);
                 if (result)
                 {
                     TempData["SuccessMessage"] = "Employee deleted Successfully";
