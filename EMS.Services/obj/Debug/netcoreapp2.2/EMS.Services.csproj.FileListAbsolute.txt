@@ -10,3 +10,15 @@ F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.AssemblyInfo.cs
 F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csproj.CopyComplete
 F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.dll
 F:\EMS.Web\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.pdb
+F:\Ankit\Project\VolyoEMS\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.deps.json
+F:\Ankit\Project\VolyoEMS\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.dll
+F:\Ankit\Project\VolyoEMS\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Services.pdb
+F:\Ankit\Project\VolyoEMS\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Entities.dll
+F:\Ankit\Project\VolyoEMS\EMS.Services\bin\Debug\netcoreapp2.2\EMS.Entities.pdb
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csprojAssemblyReference.cache
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csproj.CoreCompileInputs.cache
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.AssemblyInfoInputs.cache
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.AssemblyInfo.cs
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.csproj.CopyComplete
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.dll
+F:\Ankit\Project\VolyoEMS\EMS.Services\obj\Debug\netcoreapp2.2\EMS.Services.pdb

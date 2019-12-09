@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EMS.Entities;
+using EMS.Web.Controllers;
 using EMS.Web.Repositories;
 using EMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,21 +18,23 @@ namespace EMS.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class EmployeeController : Controller
+    public class EmployeeController : BaseController
     {
         private readonly AdminRepository adminRepository;
         private readonly UserManager<IdentityUser> userManager;
         private readonly HostingEnvironment hostingEnvironment;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public EmployeeRepository employeeRepository { get; }
         string directoryPath = string.Empty;
 
-        public EmployeeController(EmployeeRepository employeeRepository, AdminRepository adminRepository, UserManager<IdentityUser> userManager, HostingEnvironment hostingEnvironment)
+        public EmployeeController(EmployeeRepository employeeRepository, AdminRepository adminRepository, AccountRepository accountRepository, UserManager<IdentityUser> userManager, HostingEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor, accountRepository)
         {
             this.employeeRepository = employeeRepository;
             this.adminRepository = adminRepository;
             this.userManager = userManager;
             this.hostingEnvironment = hostingEnvironment;
+            this.httpContextAccessor = httpContextAccessor;
             directoryPath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\EmployeeImage");
         }
 
@@ -79,7 +83,6 @@ namespace EMS.Web.Areas.Admin.Controllers
                     model.Employee.EmployeeCode = lastEmpCode + 1;
                 }
 
-                //model.Employee.CreatedBy = LoginUser.Id;
                 if (model.ProfileImage != null)
                 {
                     if (!Directory.Exists(directoryPath))
@@ -92,6 +95,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                     model.ProfileImage.CopyTo(new FileStream(filePath, FileMode.Create));
                     model.Employee.ImagePath = uniqueFileName;
                 }
+                model.Employee.CreatedBy = LoginUser.UserId.ToString();
                 var result = employeeRepository.AddUpdateEmployee(model.Employee);
                 if (result != null)
                 {
@@ -213,7 +217,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                         employee.PrimarySkills = model.Employee.PrimarySkills;
                         employee.SecondarySkills = model.Employee.SecondarySkills;
                         employee.ReportTo = model.Employee.ReportTo;
-                        //employee.ModifiedBy = LoginUser.Id;
+                        employee.ModifiedBy = LoginUser.UserId.ToString();
 
                         if (employee.ImagePath != null)
                         {
@@ -275,6 +279,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             {
                 employee.IsActive = false;
                 employee.IsDeleted = true;
+                employee.ModifiedBy = LoginUser.UserId.ToString();
 
                 var result = employeeRepository.AddUpdateEmployee(employee);
                 if (result != null)
@@ -298,6 +303,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             {
                 employee.IsActive = true;
                 employee.IsDeleted = false;
+                employee.ModifiedBy = LoginUser.UserId.ToString();
 
                 var result = employeeRepository.AddUpdateEmployee(employee);
                 if (result != null)

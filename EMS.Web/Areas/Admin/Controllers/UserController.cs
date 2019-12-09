@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EMS.Entities;
+using EMS.Web.Controllers;
 using EMS.Web.Repositories;
 using EMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,21 +18,23 @@ namespace EMS.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly HostingEnvironment hostingEnvironment;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
         public RoleManager<IdentityRole> roleManager { get; }
         public UserManager<IdentityUser> userManager { get; }
         public AccountRepository accountRepository { get; }
         string directoryPath = string.Empty;
 
-        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AccountRepository accountRepository, HostingEnvironment hostingEnvironment)
+        public UserController(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AccountRepository accountRepository, HostingEnvironment hostingEnvironment, IHttpContextAccessor httpContextAccessor) : base(httpContextAccessor, accountRepository)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             this.accountRepository = accountRepository;
             this.hostingEnvironment = hostingEnvironment;
+            this.httpContextAccessor = httpContextAccessor;
             directoryPath = Path.Combine(hostingEnvironment.WebRootPath + "\\Images\\UserImage");
         }
 
@@ -134,7 +138,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                                 addUser = model.User;
                                 addUser.AspUserId = new Guid(user.Id);
 
-                                //addUser.CreatedBy = 0; // There must be login user id
+
 
                                 if (model.ProfileImage != null)
                                 {
@@ -150,6 +154,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                                 }
 
                                 //throw new System.ArgumentException("Parameter cannot be null", "original");
+                                addUser.CreatedBy = LoginUser.UserId.ToString();
                                 var result = accountRepository.AddUpdateUser(addUser);
                                 if (result != null)
                                 {
@@ -265,6 +270,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                         user.LastName = model.User.LastName;
                         user.PhoneNumber = model.User.PhoneNumber;
                         user.MobileNumber = model.User.MobileNumber;
+                        user.ModifiedBy = LoginUser.UserId.ToString();
 
                         string uniqueFileName = null;
                         if (model.ProfileImage != null)
@@ -339,6 +345,7 @@ namespace EMS.Web.Areas.Admin.Controllers
                 {
                     user.IsActive = false;
                     user.IsDeleted = true;
+                    user.ModifiedBy = LoginUser.UserId.ToString();
 
                     var result = accountRepository.AddUpdateUser(user);
                     if (result != null)
@@ -367,6 +374,7 @@ namespace EMS.Web.Areas.Admin.Controllers
             {
                 user.IsActive = true;
                 user.IsDeleted = false;
+                user.ModifiedBy = LoginUser.UserId.ToString();
 
                 var result = accountRepository.AddUpdateUser(user);
                 if (result != null)

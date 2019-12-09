@@ -13042,6 +13042,8 @@
       "EMS.Entities >= 1.0.0",
       "EMS.Services >= 1.0.0",
       "Microsoft.AspNetCore.App >= 2.2.0",
+      "Microsoft.AspNetCore.Identity >= 2.2.0",
+      "Microsoft.AspNetCore.Mvc.TagHelpers >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
       "Microsoft.EntityFrameworkCore.SqlServer >= 2.2.0",
       "Microsoft.EntityFrameworkCore.Tools >= 2.2.0",
@@ -13056,11 +13058,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Ankit\\Project\\EMS\\EMS.Web\\EMS.Web.csproj",
+      "projectUniqueName": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Web\\EMS.Web.csproj",
       "projectName": "EMS.Web",
-      "projectPath": "F:\\Ankit\\Project\\EMS\\EMS.Web\\EMS.Web.csproj",
+      "projectPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Web\\EMS.Web.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "F:\\Ankit\\Project\\EMS\\EMS.Web\\obj\\",
+      "outputPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -13079,11 +13081,11 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "F:\\Ankit\\Project\\EMS\\EMS.Entities\\EMS.Entities.csproj": {
-              "projectPath": "F:\\Ankit\\Project\\EMS\\EMS.Entities\\EMS.Entities.csproj"
+            "F:\\Ankit\\Project\\VolyoEMS\\EMS.Entities\\EMS.Entities.csproj": {
+              "projectPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Entities\\EMS.Entities.csproj"
             },
-            "F:\\Ankit\\Project\\EMS\\EMS.Services\\EMS.Services.csproj": {
-              "projectPath": "F:\\Ankit\\Project\\EMS\\EMS.Services\\EMS.Services.csproj"
+            "F:\\Ankit\\Project\\VolyoEMS\\EMS.Services\\EMS.Services.csproj": {
+              "projectPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Services\\EMS.Services.csproj"
             }
           }
         }
@@ -13102,6 +13104,14 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "Microsoft.AspNetCore.Identity": {
+            "target": "Package",
+            "version": "[2.2.0, )"
+          },
+          "Microsoft.AspNetCore.Mvc.TagHelpers": {
+            "target": "Package",
+            "version": "[2.2.0, )"
           },
           "Microsoft.AspNetCore.Razor.Design": {
             "suppressParent": "All",

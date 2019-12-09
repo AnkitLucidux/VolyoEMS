@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using EMS.Entities;
 using EMS.Web.Data;
+using EMS.Web.Repositories;
 using EMS.Web.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -14,40 +16,21 @@ namespace EMS.Web.Controllers
 {
     public class BaseController : Controller
     {
-        protected UserViewModel LoginUser = new UserViewModel();
-
         private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly AccountRepository accountRepository;
 
-        public BaseController(IHttpContextAccessor httpContextAccessor)
+        protected User LoginUser;
+
+        public BaseController(IHttpContextAccessor httpContextAccessor, AccountRepository accountRepository)
         {
-            //this.userManager = userManager;
-            //this.context = context;
-            //GetLoginUser();
             this.httpContextAccessor = httpContextAccessor;
-
+            this.accountRepository = accountRepository;
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
-            var user = httpContextAccessor.HttpContext.User;
-            var userId = user.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var userName = user.FindFirst(ClaimTypes.Name).Value;
-            var userRole = user.FindFirst(ClaimTypes.Role).Value;
-
-            LoginUser.User.AspUserId = Guid.Parse(userId);
-            LoginUser.User.Email = userName;
-            LoginUser.RoleName = userRole;
+            var aspUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            LoginUser = accountRepository.GetUserByAspId(Guid.Parse(aspUserId));
         }
-
-        //public string LoginUser()
-        //{
-        //    return "";
-        //}
-        //public async void GetLoginUser()
-        //{
-        //    var loginUserId = userManager.GetUserId(HttpContext.User);
-        //    LoginUser = await userManager.FindByIdAsync(loginUserId);
-        //}
     }
 }

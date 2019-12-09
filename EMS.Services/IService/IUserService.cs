@@ -16,6 +16,8 @@ namespace EMS.Services.IService
 
         User GetUserById(Guid id);
 
+        User GetUserByAspId(Guid aspId);
+
         bool DeleteUserById(Guid id);
     }
 }

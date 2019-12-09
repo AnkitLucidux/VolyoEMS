@@ -40,6 +40,11 @@ namespace EMS.Web.Repositories
             return userService.GetUserById(id);
         }
 
+        public User GetUserByAspId(Guid aspId)
+        {
+            return userService.GetUserByAspId(aspId);
+        }
+
         public bool DeleteUserById(Guid id)
         {
             return userService.DeleteUserById(id);

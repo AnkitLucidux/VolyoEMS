@@ -5,6 +5,56 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191111133250_UserTable.cs" />
+    <Compile Remove="Migrations\20191111133250_UserTable.Designer.cs" />
+    <Compile Remove="Migrations\20191113091139_initialMigration.cs" />
+    <Compile Remove="Migrations\20191113091139_initialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20191113091723_AddedTableDepartmentDesignationEmployeeQualification.cs" />
+    <Compile Remove="Migrations\20191113091723_AddedTableDepartmentDesignationEmployeeQualification.Designer.cs" />
+    <Compile Remove="Migrations\20191115121751_UpdateDesignationModel.cs" />
+    <Compile Remove="Migrations\20191115121751_UpdateDesignationModel.Designer.cs" />
+    <Compile Remove="Migrations\20191118101559_Employee model change.cs" />
+    <Compile Remove="Migrations\20191118101559_Employee model change.Designer.cs" />
+    <Compile Remove="Migrations\20191118133325_ChangeCascadeDeleteToNoAction.cs" />
+    <Compile Remove="Migrations\20191118133325_ChangeCascadeDeleteToNoAction.Designer.cs" />
+    <Compile Remove="Migrations\20191119100637_UpdatedBaseEntity.cs" />
+    <Compile Remove="Migrations\20191119100637_UpdatedBaseEntity.Designer.cs" />
+    <Compile Remove="Migrations\20191120111631_EmployeeModelChange.cs" />
+    <Compile Remove="Migrations\20191120111631_EmployeeModelChange.Designer.cs" />
+    <Compile Remove="Migrations\20191121113850_AddedLeaveTypeEntity.cs" />
+    <Compile Remove="Migrations\20191121113850_AddedLeaveTypeEntity.Designer.cs" />
+    <Compile Remove="Migrations\20191121124053_AddedholidayEntity.cs" />
+    <Compile Remove="Migrations\20191121124053_AddedholidayEntity.Designer.cs" />
+    <Compile Remove="Migrations\20191121124251_AddedholidayEntity1.cs" />
+    <Compile Remove="Migrations\20191121124251_AddedholidayEntity1.Designer.cs" />
+    <Compile Remove="Migrations\20191121124344_AddedholidayEntity2.cs" />
+    <Compile Remove="Migrations\20191121124344_AddedholidayEntity2.Designer.cs" />
+    <Compile Remove="Migrations\20191121130919_AddedholidayEntityChange.cs" />
+    <Compile Remove="Migrations\20191121130919_AddedholidayEntityChange.Designer.cs" />
+    <Compile Remove="Migrations\20191122095619_AddedLeaveBalanceTable.cs" />
+    <Compile Remove="Migrations\20191122095619_AddedLeaveBalanceTable.Designer.cs" />
+    <Compile Remove="Migrations\20191122095744_AddedLeaveBalanceTable1.cs" />
+    <Compile Remove="Migrations\20191122095744_AddedLeaveBalanceTable1.Designer.cs" />
+    <Compile Remove="Migrations\20191122095836_AddedLeaveBalanceTable2.cs" />
+    <Compile Remove="Migrations\20191122095836_AddedLeaveBalanceTable2.Designer.cs" />
+    <Compile Remove="Migrations\20191122112823_UpdatedLeaveBalanceTable.cs" />
+    <Compile Remove="Migrations\20191122112823_UpdatedLeaveBalanceTable.Designer.cs" />
+    <Compile Remove="Migrations\20191125070910_AddedEmployeeLeaveTable.cs" />
+    <Compile Remove="Migrations\20191125070910_AddedEmployeeLeaveTable.Designer.cs" />
+    <Compile Remove="Migrations\20191125071642_AddedEmployeeLeaveTable1.cs" />
+    <Compile Remove="Migrations\20191125071642_AddedEmployeeLeaveTable1.Designer.cs" />
+    <Compile Remove="Migrations\20191125072602_UpdatedEmployeeLeaveTable.cs" />
+    <Compile Remove="Migrations\20191125072602_UpdatedEmployeeLeaveTable.Designer.cs" />
+    <Compile Remove="Migrations\20191125103511_UpdatedEmployeeLeaveTableNullableDate.cs" />
+    <Compile Remove="Migrations\20191125103511_UpdatedEmployeeLeaveTableNullableDate.Designer.cs" />
+    <Compile Remove="Migrations\20191125103731_UpdatedEmployeeLeaveTableNullableDate0.cs" />
+    <Compile Remove="Migrations\20191125103731_UpdatedEmployeeLeaveTableNullableDate0.Designer.cs" />
+    <Compile Remove="Migrations\20191126130301_UpdatedLeaveHistoryModel.cs" />
+    <Compile Remove="Migrations\20191126130301_UpdatedLeaveHistoryModel.Designer.cs" />
+    <Compile Remove="Migrations\20191205103035_EmployeeModelChange.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.DataAnnotations" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">

@@ -5520,11 +5520,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "F:\\Ankit\\Project\\EMS\\EMS.Services\\EMS.Services.csproj",
+      "projectUniqueName": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Services\\EMS.Services.csproj",
       "projectName": "EMS.Services",
-      "projectPath": "F:\\Ankit\\Project\\EMS\\EMS.Services\\EMS.Services.csproj",
+      "projectPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Services\\EMS.Services.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "F:\\Ankit\\Project\\EMS\\EMS.Services\\obj\\",
+      "outputPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Services\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -5543,8 +5543,8 @@
       "frameworks": {
         "netcoreapp2.2": {
           "projectReferences": {
-            "F:\\Ankit\\Project\\EMS\\EMS.Entities\\EMS.Entities.csproj": {
-              "projectPath": "F:\\Ankit\\Project\\EMS\\EMS.Entities\\EMS.Entities.csproj"
+            "F:\\Ankit\\Project\\VolyoEMS\\EMS.Entities\\EMS.Entities.csproj": {
+              "projectPath": "F:\\Ankit\\Project\\VolyoEMS\\EMS.Entities\\EMS.Entities.csproj"
             }
           }
         }

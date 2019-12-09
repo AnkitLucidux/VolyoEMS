@@ -51,6 +51,11 @@ namespace EMS.Services.Service
             return context.Users.Where(m => m.UserId == id).FirstOrDefault();
         }
 
+        public User GetUserByAspId(Guid aspId)
+        {
+            return context.Users.Where(m => m.AspUserId == aspId).FirstOrDefault();
+        }
+
         public bool DeleteUserById(Guid id)
         {
             try

@@ -6,9 +6,55 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Views\Department\**" />
+    <Compile Remove="Views\Designation\**" />
+    <Compile Remove="Views\Employee\**" />
+    <Compile Remove="Views\Holiday\**" />
+    <Compile Remove="Views\Home\**" />
+    <Compile Remove="Views\Leave\**" />
+    <Compile Remove="Views\Qualification\**" />
+    <Compile Remove="Views\Role\**" />
+    <Compile Remove="Views\User\**" />
+    <Content Remove="Views\Department\**" />
+    <Content Remove="Views\Designation\**" />
+    <Content Remove="Views\Employee\**" />
+    <Content Remove="Views\Holiday\**" />
+    <Content Remove="Views\Home\**" />
+    <Content Remove="Views\Leave\**" />
+    <Content Remove="Views\Qualification\**" />
+    <Content Remove="Views\Role\**" />
+    <Content Remove="Views\User\**" />
+    <EmbeddedResource Remove="Views\Department\**" />
+    <EmbeddedResource Remove="Views\Designation\**" />
+    <EmbeddedResource Remove="Views\Employee\**" />
+    <EmbeddedResource Remove="Views\Holiday\**" />
+    <EmbeddedResource Remove="Views\Home\**" />
+    <EmbeddedResource Remove="Views\Leave\**" />
+    <EmbeddedResource Remove="Views\Qualification\**" />
+    <EmbeddedResource Remove="Views\Role\**" />
+    <EmbeddedResource Remove="Views\User\**" />
+    <None Remove="Views\Department\**" />
+    <None Remove="Views\Designation\**" />
+    <None Remove="Views\Employee\**" />
+    <None Remove="Views\Holiday\**" />
+    <None Remove="Views\Home\**" />
+    <None Remove="Views\Leave\**" />
+    <None Remove="Views\Qualification\**" />
+    <None Remove="Views\Role\**" />
+    <None Remove="Views\User\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\_Layout-admin.cshtml" />
+    <Content Remove="wwwroot\Images\Icons\detail11.png" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.0">
@@ -22,6 +68,31 @@
   <ItemGroup>
     <ProjectReference Include="..\EMS.Entities\EMS.Entities.csproj" />
     <ProjectReference Include="..\EMS.Services\EMS.Services.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="Areas\Admin\Views\Designation\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Employee\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Holiday\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Qualification\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\Admin\Views\Role\Index.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
