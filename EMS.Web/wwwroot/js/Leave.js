@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    console.log("asdfghltityhvxxfgkjb");
     $("#EmployeeLeave_StartDate").datepicker({
         dateFormat: "d-M-yy",
         changeMonth: true,

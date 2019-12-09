@@ -14,7 +14,6 @@ F:\Ankit\Project\VolyoEMS\EMS.Entities\bin\Debug\netcoreapp2.2\EMS.Entities.runt
 F:\Ankit\Project\VolyoEMS\EMS.Entities\bin\Debug\netcoreapp2.2\EMS.Entities.runtimeconfig.dev.json
 F:\Ankit\Project\VolyoEMS\EMS.Entities\bin\Debug\netcoreapp2.2\EMS.Entities.dll
 F:\Ankit\Project\VolyoEMS\EMS.Entities\bin\Debug\netcoreapp2.2\EMS.Entities.pdb
-F:\Ankit\Project\VolyoEMS\EMS.Entities\obj\Debug\netcoreapp2.2\EMS.Entities.csprojAssemblyReference.cache
 F:\Ankit\Project\VolyoEMS\EMS.Entities\obj\Debug\netcoreapp2.2\EMS.Entities.csproj.CoreCompileInputs.cache
 F:\Ankit\Project\VolyoEMS\EMS.Entities\obj\Debug\netcoreapp2.2\EMS.Entities.AssemblyInfoInputs.cache
 F:\Ankit\Project\VolyoEMS\EMS.Entities\obj\Debug\netcoreapp2.2\EMS.Entities.AssemblyInfo.cs

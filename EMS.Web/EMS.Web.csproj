@@ -78,6 +78,11 @@
 
 
   <ItemGroup>
+    <None Include="wwwroot\js\Leave.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Content Update="Areas\Admin\Views\Designation\Index.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
