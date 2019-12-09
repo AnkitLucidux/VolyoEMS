@@ -127,3 +127,120 @@
     height: 15px;
     border-radius: 10px;
 }
+
+
+.panel {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    opacity: 0.9;
+    margin-top: 30px;
+}
+
+    .panel > .panel-heading {
+        color: #333;
+        background-color: #f5f5f5;
+        border-color: #ddd;
+        padding: 10px 15px;
+        border-bottom: 1px solid transparent;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
+.panel-body {
+    padding: 15px;
+}
+
+.panel-footer {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.card {
+    border: 1px solid #ededed;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+}
+
+.profile-view {
+    position: relative;
+}
+
+    .profile-view .profile-basic {
+        margin-left: 175px !important;
+        padding-right: 50px;
+    }
+
+    .profile-view .profile-img {
+        width: 120px;
+        height: 120px;
+        border: none !important;
+    }
+
+    .profile-view .profile-img-wrap {
+        position: absolute;
+        background: #fff;
+        overflow: hidden;
+    }
+
+    .profile-view .profile-img img {
+        height: 120px;
+        width: 120px;
+        cursor: pointer;
+        border-radius: 50%;
+    }
+
+    .profile-view .profile-basic {
+        margin-left: 140px;
+        padding-right: 50px;
+    }
+
+.profile-info-left {
+    border-right: 2px dashed #ccc;
+}
+
+.staff-id {
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.personal-info {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+    .personal-info li .title {
+        color: #4f4f4f;
+        float: left;
+        font-weight: 500;
+        margin-right: 30px;
+        width: 25%;
+    }
+
+    .personal-info li .text {
+        color: #8e8e8e;
+        display: block;
+        overflow: hidden;
+    }
+
+    .personal-info li {
+        margin-bottom: 10px;
+    }
+
+.tab-content {
+    padding-top: 20px;
+}

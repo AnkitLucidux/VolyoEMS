@@ -2,6 +2,12 @@
 
 @{
     ViewData["Title"] = "Employee Information";
+
+    var profilePicture = "/Images/default_image.jpg";
+    if (!string.IsNullOrEmpty(@Model.Employee.ImagePath))
+    {
+        profilePicture = "/Images/EmployeeImage/" + Model.Employee.ImagePath;
+    }
 }
 
 <div>
@@ -18,208 +24,158 @@
     </div>
 
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.EmployeeCode)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.EmployeeCode)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.MiddileName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.MiddileName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.Gender)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Gender)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.DOB)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.DOB)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.EmailAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.EmailAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.FatherName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.FatherName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.MotherName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.MotherName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PermanentAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PermanentAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.CommunicationAddress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.CommunicationAddress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.MobileNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.MobileNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.AadharNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.AadharNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PanNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PanNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PassportNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PassportNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PassportExpDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PassportExpDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.MaritalStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.MaritalStatus)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.JoiningDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.JoiningDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.TotalExperience)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.TotalExperience)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PastExperience)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PastExperience)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.PrimarySkills)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.PrimarySkills)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.SecondarySkills)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.SecondarySkills)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.ReportTo)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.ReportTo)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.Designation)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Designation.DesignationName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.Department)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Department.DepartmentName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.Qualification)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.Qualification.QualificationName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.IsActive)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.IsActive)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.IsDeleted)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.IsDeleted)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.CreatedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.CreatedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.ModifiedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.ModifiedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.CreatedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.CreatedBy)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Employee.ModifiedBy)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Employee.ModifiedBy)
-        </dd>
-    </dl>
+
+    <div class="card mb-0">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="profile-view">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <a asp-action="Edit" asp-route-id="@Model.Employee.EmployeeId"><img alt="" src="@profilePicture"></a>
+                            </div>
+                        </div>
+                        <div class="profile-basic">
+                            <div class="row">
+                                <div class="col-md-5 profile-info-left">
+                                    <div class="">
+                                        <h3 class="user-name m-t-0 mb-0">@Model.Employee.FirstName</h3>
+                                        <h6 class="text-muted">@Model.Employee.Department.DepartmentName</h6>
+                                        <small class="text-muted">@Model.Employee.Designation.DesignationName</small>
+                                        <div class="staff-id">Employee ID : @Model.Employee.EmployeeCode</div>
+                                        <div class="small doj text-muted">Date of Join : @Model.Employee.JoiningDate</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <ul class="personal-info">
+                                        <li>
+                                            <div class="title">
+                                                @Html.DisplayNameFor(model => model.Employee.MobileNumber)
+                                            </div>
+                                            <div class="text">@Model.Employee.MobileNumber</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">@Html.DisplayNameFor(model => model.Employee.EmailAddress)</div>
+                                            <div class="text">@Model.Employee.EmailAddress</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">@Html.DisplayNameFor(model => model.Employee.DOB)</div>
+                                            <div class="text">@Model.Employee.DOB</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">@Html.DisplayNameFor(model => model.Employee.CommunicationAddress)</div>
+                                            <div class="text">@Model.Employee.CommunicationAddress</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">@Html.DisplayNameFor(model => model.Employee.Gender)</div>
+                                            <div class="text">@Model.Employee.Gender</div>
+                                        </li>
+                                        <li>
+                                            <div class="title">@Html.DisplayNameFor(model => model.Employee.ReportTo)</div>
+                                            <div class="text">
+                                                <a href="profile.html">
+                                                    @Model.Employee.ReportTo
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content">
+        <!-- Profile Info Tab -->
+        <div id="emp_profile" class="pro-overview tab-pane fade show active">
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Personal Informations</h3>
+                            <ul class="personal-info">
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.FatherName)</div>
+                                    <div class="text">@Model.Employee.FatherName</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.MotherName)</div>
+                                    <div class="text">@Model.Employee.MotherName</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.AadharNumber)</div>
+                                    <div class="text">@Model.Employee.AadharNumber</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.PanNumber)</div>
+                                    <div class="text">@Model.Employee.PanNumber</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.PassportNumber)</div>
+                                    <div class="text">@Model.Employee.PassportNumber</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.PassportExpDate)</div>
+                                    <div class="text">@Model.Employee.PassportExpDate</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.PhoneNumber)</div>
+                                    <div class="text"><a href="">@Model.Employee.PhoneNumber</a></div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.MaritalStatus)</div>
+                                    <div class="text">@Model.Employee.MaritalStatus</div>
+                                </li>
+                                <li>
+                                    <div class="title">Qualification</div>
+                                    <div class="text">@Model.Employee.Qualification.QualificationName</div>
+                                </li>
+                                <li>
+                                    <div class="title">@Html.DisplayNameFor(model => model.Employee.PermanentAddress)</div>
+                                    <div class="text">@Model.Employee.PermanentAddress</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 d-flex">
+                    <div class="card profile-box flex-fill">
+                        <div class="card-body">
+                            <h3 class="card-title">Experience</h3>
+                            <div class="experience-box">
+                                <ul class="experience-list">
+                                    <li>
+                                        <div class="title">@Html.DisplayNameFor(model => model.Employee.TotalExperience)</div>
+                                        <div class="text">@Model.Employee.TotalExperience</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">@Html.DisplayNameFor(model => model.Employee.PastExperience)</div>
+                                        <div class="text">@Model.Employee.PastExperience</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">@Html.DisplayNameFor(model => model.Employee.PrimarySkills)</div>
+                                        <div class="text">@Model.Employee.PrimarySkills</div>
+                                    </li>
+                                    <li>
+                                        <div class="title">@Html.DisplayNameFor(model => model.Employee.SecondarySkills)</div>
+                                        <div class="text">@Model.Employee.SecondarySkills</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Profile Info Tab -->
+    </div>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Employee.EmployeeId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Employee.EmployeeId">Edit</a>
+    <a class="btn btn-primary" asp-action="Index">Back to List</a>
 </div>

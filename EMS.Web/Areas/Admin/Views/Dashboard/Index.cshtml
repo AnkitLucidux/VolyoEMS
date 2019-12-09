@@ -40,7 +40,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6">
+    <div class=@(Model.UpcomingLeavesList.Count > 0 ? "col-sm-6": "col-sm-12" )>
         <div class="card flex-fill">
             <div class="card-body">
                 <h4 class="card-title">Today Leaves <span class="badge bg-inverse-danger ml-2">@Model.TodayLeavesList.Count</span></h4>
@@ -79,43 +79,46 @@
         </div>
     </div>
 
-    <div class="col-sm-6">
-        <div class="card flex-fill">
-            <div class="card-body">
-                <h4 class="card-title">Upcoming Leaves <span class="badge bg-inverse-danger ml-2">@Model.UpcomingLeavesList.Count</span></h4>
+    @if (Model.UpcomingLeavesList.Count > 0)
+    {
+        <div class="col-sm-6">
+            <div class="card flex-fill">
+                <div class="card-body">
+                    <h4 class="card-title">Upcoming Leaves <span class="badge bg-inverse-danger ml-2">@Model.UpcomingLeavesList.Count</span></h4>
 
-                @if (Model.UpcomingLeavesList != null && Model.UpcomingLeavesList.Count() > 0)
-                {
-                    @foreach (var leave in Model.UpcomingLeavesList)
+                    @if (Model.UpcomingLeavesList != null && Model.UpcomingLeavesList.Count() > 0)
                     {
-                        var profilePicture = "/Images/user.jpg";
-                        if (!string.IsNullOrEmpty(leave.Employee.ImagePath))
+                        @foreach (var leave in Model.UpcomingLeavesList)
                         {
-                            profilePicture = "/Images/EmployeeImage/" + leave.Employee.ImagePath;
+                            var profilePicture = "/Images/user.jpg";
+                            if (!string.IsNullOrEmpty(leave.Employee.ImagePath))
+                            {
+                                profilePicture = "/Images/EmployeeImage/" + leave.Employee.ImagePath;
+                            }
+
+                            <div class="leave-info-box">
+                                <div class="media align-items-center">
+                                    <a class="avatar" asp-area="Admin" asp-controller="Employee" asp-action="Details" asp-route-id="@leave.Employee.EmployeeId"><img alt="@leave.Employee.FirstName" src="@profilePicture"></a>
+
+                                    <div class="media-body">
+                                        <div class="text-sm my-0">@leave.Employee.FirstName</div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center mt-3">
+                                    <div class="col-6">
+                                        <h6 class="mb-0">@leave.StartDate.ToShortDateString() - @leave.EndDate.ToShortDateString()</h6>
+                                        <span class="text-sm text-muted">Leave Start Date - Leave End Date</span>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span class="badge bg-inverse-danger">Pending</span>
+                                    </div>
+                                </div>
+                            </div>
                         }
-
-                        <div class="leave-info-box">
-                            <div class="media align-items-center">
-                                <a class="avatar" asp-area="Admin" asp-controller="Employee" asp-action="Details" asp-route-id="@leave.Employee.EmployeeId"><img alt="@leave.Employee.FirstName" src="@profilePicture"></a>
-
-                                <div class="media-body">
-                                    <div class="text-sm my-0">@leave.Employee.FirstName</div>
-                                </div>
-                            </div>
-                            <div class="row align-items-center mt-3">
-                                <div class="col-6">
-                                    <h6 class="mb-0">@leave.StartDate.ToShortDateString() - @leave.EndDate.ToShortDateString()</h6>
-                                    <span class="text-sm text-muted">Leave Start Date - Leave End Date</span>
-                                </div>
-                                <div class="col-6 text-right">
-                                    <span class="badge bg-inverse-danger">Pending</span>
-                                </div>
-                            </div>
-                        </div>
                     }
-                }
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
