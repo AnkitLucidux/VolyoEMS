@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     console.log("asdfghltityhvxxfgkjb");
+
     $("#EmployeeLeave_StartDate").datepicker({
         dateFormat: "d-M-yy",
         changeMonth: true,
@@ -28,15 +29,16 @@
         }
     });
 
-    var empId = $("#EmployeeLeave_EmployeeId").val();
-    if (empId != null) {
-        getHandoverEmployeeList();
-    }
+    if ($("#EmployeeLeave_EmployeeId").on('chnage', function () {
+        var selectedEmpId = $(this).val();
+        if (selectedEmpId != "" || selectedEmpId != null) {
+            getHandoverEmployeeList(selectedEmpId);
+        }
+    }));
 });
 
 
-function getHandoverEmployeeList() {
-    var empId = $("#EmployeeLeave_EmployeeId").val();
+function getHandoverEmployeeList(empId) {
     $.ajax
         ({
             url: '/Admin/Leave/GetHandoverEmployeeList',

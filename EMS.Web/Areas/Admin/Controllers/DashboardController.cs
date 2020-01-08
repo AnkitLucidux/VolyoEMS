@@ -29,12 +29,13 @@ namespace EMS.Web.Areas.Admin.Controllers
             var employeeLeaves = adminRepository.GetEmployeeLeaves();
             model.TotalEmployeeCount = employeeRepository.GetAllActiveEmployees().Count();
 
-            model.TodayLeavesList = employeeLeaves.Where(m => m.StartDate == DateTime.Now.Date).ToList();
+            var todayDate = DateTime.Now.Date;
+            model.TodayLeavesList = employeeLeaves.Where(m => m.StartDate.Date <= todayDate && m.EndDate.Date >= todayDate).ToList();
             model.TodayLeavePercent = (model.TodayLeavesList.Count * 100) / model.TotalEmployeeCount;
 
-            var upcomingLeaveStartDate = DateTime.Now.Date;
-            var upcomingLeaveEndDate = DateTime.Now.AddDays(30).Date;
-            model.UpcomingLeavesList = employeeLeaves.Where(m => m.StartDate > upcomingLeaveStartDate && m.EndDate <= upcomingLeaveEndDate).ToList();
+            var upcomingLeaveStartDate = DateTime.Today.AddDays(1).Date;
+            var upcomingLeaveEndDate = DateTime.Today.AddDays(30).Date;
+            model.UpcomingLeavesList = employeeLeaves.Where(m => (m.StartDate.Date <= upcomingLeaveStartDate && m.EndDate.Date >= upcomingLeaveStartDate)  && m.EndDate.Date <= upcomingLeaveEndDate).ToList();
             model.UpcomingLeavePercent = (model.UpcomingLeavesList.Count * 100) / model.TotalEmployeeCount;
 
             return View(model);

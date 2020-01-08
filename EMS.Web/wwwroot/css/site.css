@@ -54,11 +54,13 @@ body {
     width: 100%;
     white-space: nowrap;
     /* Set the fixed height of the footer here */
-    height: 60px;
+    height: 55px;
     line-height: 60px; /* Vertically center the text there */
     text-align: center;
     color: #FFF !important;
     background: linear-gradient(to right, #f65c13 0%, #b2051c 100%);
+    position:fixed;
+    z-index:999;
 }
 
     .footer a {

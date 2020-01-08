@@ -29,13 +29,6 @@
         changeYear: true,
         beforeShowDay: $.datepicker.noWeekends
     });
-
-    $("#HolidayDate").datepicker({
-        dateFormat: "d-M-yy",
-        changeMonth: true,
-        changeYear: true,
-        beforeShowDay: $.datepicker.noWeekends
-    });
 });
 
 function openNav() {
